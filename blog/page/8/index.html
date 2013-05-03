@@ -1,0 +1,697 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="Using Paypal Website Payments Pro with Ruby On Rails There have been a few tutorials written on using PayPal&#8217;s API with RubyOnRails. There have &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jhubert.github.io/blog/page/8">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jhubert.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/07/07/paypal-website-payments-pro-with-ruby-on-rails/">Using Paypal Website Payments Pro With Ruby on Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-07-07T00:00:00-07:00" pubdate data-updated="true">Jul 7<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Using Paypal Website Payments Pro with Ruby On Rails</h2>
+
+<p>There have been a few tutorials written on using <a href="http://www.paypal.com">PayPal</a>&#8217;s API with RubyOnRails. There have been <a href="http://www.elctech.com/products_ruby_paypal.shtml">plugins made</a> and <a href="http://home.leetsoft.com/am/ticket/4">patches</a> to <a href="http://home.leetsoft.com/am">ActiveMerchant</a> developed. Still, I could not for the life of me get it working for the longest time. This is my walkthrough.. it&#8217;s the idiot&#8217;s walkthrough. I assume nothing about your knowledge, and I will explain it in a detailed step by step process.</p>
+
+<p>Here are the steps required to using PayPal&#8217;s <a href="https://www.paypal.com/IntegrationCenter/ic_pro_home.html">Website Payments Pro</a>. Also note that at this time Website Payments Pro is <span class="caps">ONLY</span> available to US merchants.</p>
+
+<ol>
+<li>Get a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_registration-run">PayPal business or premier account</a>.</li>
+<li>Apply for Website Payments Pro and get approved.</li>
+<li>Setup a <a href="https://developer.paypal.com/devscr?cmd=_signup-run">Paypal developer account</a> and sandbox accounts</li>
+<li>Get the necessary <span class="caps">API</span> access and certificates</li>
+<li>Download the <a href="http://www.elctech.com/ruby/ruby_paypal-1_4.tgz"><span class="caps">ELC</span> RoR::Paypal Plugin</a></li>
+<li>Download <a href="http://dev.ctor.org/download/archive/soap4r-20051117.tar.gz">soap4r</a> and <a href="http://dev.ctor.org/download/archive/http-access_2_0.tar.gz">http-access2</a></li>
+<li>Install the plugin</li>
+<li>Setup the plugin and certificates</li>
+<li>Run the tests</li>
+</ol>
+
+
+<p>If you&#8217;ve already done most of this and you&#8217;re just looking for answers to the hard questions, here they are for reference:</p>
+
+<ol>
+<li>You need to use the Nov 2005 version of soap4r to generate the wsdl and to send the request to paypal</li>
+<li>Your Username and Password for using the <span class="caps">API</span> is <span class="caps">NOT</span> your Paypal login info. It is the username and password provided for you when you generate the <span class="caps">API</span> Certificate.</li>
+<li>Paypal&#8217;s Country Codes are the <span class="caps">TWO</span> character international standards. CA, US, DE, JP etc</li>
+</ol>
+
+
+<p>Here are some common issues we hit and what they mean:</p>
+
+<ol>
+<li>&#8220;OrderTotal is required&#8221; - You are using an old version of the default.rb and defaultDriver.rb files. You need to regenerate them with the <a href="http://dev.ctor.org/download/archive/soap4r-20051117.tar.gz">Nov 2005 version of soap4r</a> (or newer).</li>
+<li>Authentication Error - Not using the right username / password from the <span class="caps">API</span> Credentials</li>
+<li><span class="caps">SSL</span> Not Supported - You need to install <a href="http://dev.ctor.org/download/archive/http-access_2_0.tar.gz">http-access2</a></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/05/01/kidzworld/">Kidzworld</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-05-01T00:00:00-07:00" pubdate data-updated="true">May 1<span>st</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Kidzworld
+
+In 2006 I designed and developed a kids social networking site to replace their 500,000 member online magazine. I did all of the development and planning by myself. It was huge. Looking back on it, doing it by myself was stupid.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/04/12/interview-with-geoffrey-grosenbach/">Interview With Geoffrey Grosenbach</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-04-12T00:00:00-07:00" pubdate data-updated="true">Apr 12<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><iframe width="400" height="329" src="http://www.youtube.com/embed/BZJDs7Ap660?wmode=transparent&autohide=1&egm=0&hd=1&iv_load_policy=3&modestbranding=1&rel=0&showinfo=0&showsearch=0" frameborder="0" allowfullscreen></iframe><p>Geoff stopped into the Raincity office today and I got the chance to ask him a few random questions.  We were able to catch it all on film using out high tech video recorder.. and a stapler.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/03/01/mexiretire-and-livetopia/">MexRetire and Livtopia</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-03-01T00:00:00-08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"># MexRetire and Livtopia
+
+In a 2006 partnership with Raincity Studios, I developed the Livtopia network of sites. MexRetire, an informational resource for people interested in retiring to Mexico; MexLiving, a Mexican property listing site; and Livtopia, a full blown real estate information site for latin america. Again, I did all of the development, planning and architecture for all three websites.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/01/23/conquering-fear-the-end-of-good-enough/">Conquering Fear - the End of Good Enough</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-01-23T00:00:00-08:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Conquering Fear: The end of &#8216;Good Enough&#8217;</h2>
+
+<p>We all have fears. Our lives are dictated by them. The fears that we express such as spiders and small spaces are easy to pin point. We let them out and, although they control us, we understand that and work around them. If we are unable to fly because of our fear of flying, we schedule trips that involve cars, trains and boats instead. We learn to tolerate this, as do those around us, and it becomes a part of our life.</p>
+
+<p>The worst cause of fear is that people settle. They decide that what they have is &#8216;good enough&#8217; because they do not want to put themselves through the pain of taking action. They choose fat over fit because of how hard it would be to get some exercise and to eat well. They stay in jobs they don&#8217;t like because of the fear that there is nothing else out there. They stay in relationships that they know aren&#8217;t right, just because fear of losing someone close doesn&#8217;t seem worth it.</p>
+
+<p>The path to being honest with yourself is a dangerous one. To be truly honest with yourself, and do something about it, takes a tremendous amount of strength. You have to stand up, look at what you want, look at what you&#8217;re afraid of and face it head on.</p>
+
+<pre><code>Power (n.)
+
+  The ability or capacity to perform or act effectively.
+</code></pre>
+
+<p>The fear of the unknown and the fear of pain can <span class="caps">NOT</span> dictate your life. You have to get past it. You have to <strong>ask yourself honest questions</strong> and deal with the answers. How many of you know people who are unhappy in their jobs, yet do nothing about it. Would you say that only their job is affected by this? NO! Everything is affected by not being true to yourself.</p>
+
+<p>If you are unable to take action on something in your life, it has effects on everything. <strong>If you <span class="caps">KNOW</span> what is right but refuse to do it, you can not be truly happy.</strong> Not taking action makes us less powerful. Being less powerful affects our self esteem. Having lowered self esteem affects the way we interact with people. Everything you do is connected to your ability to be honest with yourself. It is a very fragile system, but it is there for a reason.</p>
+
+<p>The long term pain of not being honest with yourself will have a devastating effect on your life. One thing leads to another. You settle for a job you don&#8217;t like. Because of that job&#8217;s salary, you tolerate living in an area that you&#8217;re not happy with. You meet a woman who is &#8220;good enough&#8221; and get married. Your life seems to be trucking along just fine. That&#8217;s when it hits. The inner nagging that has been with you all along. The painful feeling in your gut that you have learned to live with starts acting up. You take a good look at your life, and realize that it&#8217;s not what you wanted. What do you do now? You&#8217;ve got a family, friends, a lifestyle that you&#8217;re deeply intrenched in - and getting out of it is going to be incredibly painful.</p>
+
+<p>Take action now, before it is too hard not to. The pain you feel for a week, month or year is worth every minute compared to the pain that eats away at you when everything is &#8220;good enough.&#8221;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2005/10/01/digifonica/">Digifonica</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2005-10-01T00:00:00-07:00" pubdate data-updated="true">Oct 1<span>st</span>, 2005</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">In late 2005, Digifonica was getting ready to launch their white-labeled VOIP system. I developed a white labeled reseller website system that let other companies have their own VOIP website. The core of the app was developed over the course of a single weekend.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2005/09/19/installing-fastcgi-and-rubyonrails-on-freebsd/">Installing FastCGi and RubyOnRails on FreeBSD</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2005-09-19T00:00:00-07:00" pubdate data-updated="true">Sep 19<span>th</span>, 2005</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Assumptions</h2>
+
+<p>We are going to assume that Apache2 is already installed with mod_fastcgi. We are also going to assume that Ruby has already been installed from Ports. Please see <a href="#appendix1">Appendix 1</a> for a list of installed packages in my environment.</p>
+
+<h2>Step 1</h2>
+
+<p>Download the latest version of FastCGI from <a href="http://www.fastcgi.com/dist/">http://www.fastcgi.com/dist/</a></p>
+
+<h2>Step 2</h2>
+
+<p>Install the Rails bindings from Ports</p>
+
+<div>
+  <pre><code class='bash'>cd /usr/ports/www/rubygem-rails
+    make install clean</code></pre>
+</div>
+
+
+<h2>Step 3</h2>
+
+<p>Install FastCGI from Source</p>
+
+<div>
+  <pre><code class='bash'>tar -xzf fcgi-2.4.0.tar.gz
+    cd fcgi-2.4.0
+    ./configure
+    make install clean</code></pre>
+</div>
+
+
+<h2>Step 4</h2>
+
+<p>Install the Ruby FastCGI Bindings using Gem</p>
+
+<div>
+  <pre><code class='bash'>gem install fcgi --
+      --with-fcgi-include=/usr/local/include
+      --with-fcgi-lib=/usr/local/lib</code></pre>
+</div>
+
+
+<h2>Step 5</h2>
+
+<p>To setup the default website, edit your Apache2 configuration file and add the following lines:</p>
+
+<div>
+  <pre><code class='xml'>&lt;Directory /var/www/&gt;
+        AllowOverride all
+    &lt;/Directory&gt;
+
+    LoadModule fastcgi_module modules/mod_fastcgi.so
+
+    AddHandler fastcgi-script .fcgi
+
+    &lt;VirtualHost *:80&gt;
+        ServerAdmin webmaster@example.com
+        DocumentRoot /var/www/rails/testapp/public
+        ServerName www.example.com
+        ErrorLog /var/log/httpd/testapp-error_log
+        CustomLog /var/log/httpd/testapp-access_log common
+        Options Indexes ExecCGI FollowSymLinks
+        RewriteEngine On
+    &lt;/VirtualHost&gt;</code></pre>
+</div>
+
+
+<h2>Step 6</h2>
+
+<p>You&#8217;re done. You can now setup your web app. :) For more information on configuring your application to use fastcgi, please see the RailsWiki entry: <a href="http://wiki.rubyonrails.com/rails/show/HowtoSetupApacheWithFastCGIAndRubyBindings">HowtoSetupApacheWithFastCGIAndRubyBindings</a></p>
+
+<h2><a name="appendix1">Appendix 1</a></span></h2>
+
+<p>This is a pkg_info dump from the server before the install process was started. You can use this as a reference on your system.</p>
+
+<pre><code>apache-2.0.54 - Version 2 of Apache web server with prefork MPM.
+apr-nothr-db4-1.0.1_1 - The Apache Group's Portability Library
+bash-2.05b.007_2 - The GNU Bourne Again Shell
+bsdiff-4.2 - Generates and applies patches to binary files
+db42-4.2.52_4 - The Berkeley DB package, revision 4.2
+expat-1.95.8 - XML 1.0 parser written in C
+freebsd-update-1.6_1 - Fetches and installs binary updates to FreeBSD
+gettext-0.14.1 - GNU gettext package
+libiconv-1.9.2_1 - A character set conversion library
+mod_fastcgi-2.4.2 - A fast-cgi module for Apache
+mysql-client-4.1.11_1 - Multithreaded SQL database (client)
+mysql-server-4.1.11_1 - Multithreaded SQL database (server)
+neon-0.24.7 - An HTTP and WebDAV client library for Unix systems
+ngrep-1.43 - Network grep
+perl-5.8.6_2 - Practical Extraction and Report Language
+ruby-1.8.2_4 - An object-oriented interpreted scripting language
+ruby18-gems-0.8.11 - Package management framework for the Ruby language
+rubygem-actionmailer-1.0.1 - Easy email delivery and testing for Ruby
+rubygem-actionpack-1.9.1 - Action Controller and Action View of Rails MVC Framework
+rubygem-actionwebservice-0.8.1_1 - Simple support for publishing Web Service APIs for Rails ap
+rubygem-activerecord-1.11.1 - Object-relational mapping layer for Rails MVC Framework
+rubygem-activesupport-1.1.1 - Utility classes and extension that are required by Rails MV
+rubygem-rails-0.13.1 - MVC web application framework
+rubygem-rake-0.5.4 - Ruby Make
+subversion-1.1.4 - Version control system
+sudo-1.6.8.8 - Allow others to run commands as root
+vim-lite-6.3.62 - Vi 'workalike', with many additional features (Lite package)
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2005/07/26/spammer-beaten-to-death/">Spammer Gets a Beat Down</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2005-07-26T00:00:00-07:00" pubdate data-updated="true">Jul 26<span>th</span>, 2005</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I just had <a href="http://www.sptimes.ru/index.php?action_id=2&amp;story_id=272">this article</a> passed over to me by my friend <a href="http://www.plentyoffish.com">Markus Frind</a>.</p>
+
+<blockquote>
+
+<b>Russian Spammer Beaten to Death</b>
+
+<p>MOSCOW — The director of an English language center and one of the country’s most notorious spammers was found beaten to death in his apartment in central Moscow, police said Monday.</p>
+
+</blockquote>
+
+<p>Happy? Sad? Neither? Poetic Justice? What do you think?</p></div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2005/07/11/a-good-place-for-the-kitchen-sink/">A Good Place for the Kitchen Sink</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2005-07-11T00:00:00-07:00" pubdate data-updated="true">Jul 11<span>th</span>, 2005</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Improving negative activities</h2>
+
+<p>I was up visiting my parents recently, and my mother said something that stuck with me.</p>
+
+<p>&#8220;Doing the dishes wouldn&#8217;t be so bad if the sink wasn&#8217;t up against a wall.&#8221;</p>
+
+<p>I looked at the kitchen of her place and realized that she was right. The sink in this house was in the corner of the kitchen. If she was to stand at the sink to do the dishes, it would be akin to sending a kid into the corner with a dunce hat.</p>
+
+<p>Somewhere along the line, some architect was trying to fit all the necessary items into the kitchen and, although he succeeded, he forgot to think about the people. This is a mistake I&#8217;m sure a lot of us web developers, programmers, and techies do on a regular basis.</p>
+
+<p>Just think of how limiting it is to have a double sink in the corner of the room. If my parents have guests over, my mom can&#8217;t interact with them at the same time as she does the dishes. If my parents want to talk, they can&#8217;t do so over the dishes. In fact, a person could do nothing more while doing the dishes than focus on how crappy it is to do the dishes.</p>
+
+<p>Simple ways to improve this?</p>
+
+<ul>
+<li>Build the sink on an island in the middle of the kitchen</li>
+<li>Build the sink overlooking a window with a view</li>
+<li>Hire a maid. ;)</li>
+</ul>
+
+
+<p>How can these simple ideas be translated to the web? Are there things that are usable, but that don&#8217;t help take the pain away? Have you ever had to use a signup form and just loathed all the filling out you had to do?</p>
+
+<p>When you&#8217;re building your next app, or even your next house, just think about what it would be like to do a 15 person dinner&#8217;s worth of dishes while staring at the corner of a room.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2005/05/01/matchtag/">MatchTag</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2005-05-01T00:00:00-07:00" pubdate data-updated="true">May 1<span>st</span>, 2005</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">As an experiment in mapping and social networking, I created an activity based site that could tell where you are and help you connect with other people in the area who were interested in doing the same thing. Time constraints prevented me from turning it into a completed project, but within the first 4 days we had over 1500 members and ended up getting mentioned on TechCrunch.
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/9/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/7/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/25/color-picking-in-osx-lion/">Color picking on OSX Lion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/26/jardin-du-luxembourg/">Sweet Memories of Paris</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/22/tips-around-vancouver/">Tips around Vancouver, Canada</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/">Delete all tasks in a Wunderlist</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/30/translating-html-in-a-chrome-extension/">Translating HTML in a Chrome Extension</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

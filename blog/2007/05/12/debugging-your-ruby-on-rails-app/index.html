@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Debugging your Ruby on Rails App - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="Debugging your Ruby on Rails App I gave a very quick and dirty presentation tonight at the Vancouver Ruby Brigade meeting. Here are my notes from &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jhubert.github.io/blog/2007/05/12/debugging-your-ruby-on-rails-app">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jhubert.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Debugging Your Ruby on Rails App</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-05-12T00:00:00-07:00" pubdate data-updated="true">May 12<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Debugging your Ruby on Rails App</h2>
+
+<p>I gave a very quick and dirty presentation tonight at the <a href="http://vancouver.rubybrigade.com">Vancouver Ruby Brigade</a> meeting. Here are my notes from that talk.</p>
+
+<p>There are a bunch of great tools that help you debug your application in Rails. Here is a quick runthrough.</p>
+
+<h2>In A View</h2>
+
+<div>
+  <pre><code class='erb'>&lt;%= debug @object %&gt;
+    or
+    &lt;%= debug 'string' %&gt;
+    or
+    &lt;%= 'string'.inspect %&gt;</code></pre>
+</div>
+
+
+<p>This will output the data directly on to the page. It&#8217;s very useful for taking a look at what you&#8217;re working with in the view, or to check if the variable contains any data at all. I use it all the time when I&#8217;m throwing up the Show views. I just dump out the object using debug and then use the data to build my layout.</p>
+
+<h2>In A Controller</h2>
+
+<div>
+  <pre><code class='ruby'>logger.debug &quot;The object is #{@object}&quot;
+
+    RAILS_DEFAULT_LOGGER.debug @object</code></pre>
+</div>
+
+
+<p>Both of these methods will print the the standard logger. The logger.debug method works within your application. The <span class="caps">RAILS_DEFAULT_LOGGER</span> will work inside the Rails framework (if you dare dive into it) or inside any libraries where logger is not defined.</p>
+
+<div>
+  <pre><code class='ruby'>return render :text =&gt; &quot;The object is #{@object}&quot;</code></pre>
+</div>
+
+
+<p>The render :text call will dump the text to the screen and halt execution of the current action. This will allow you to see what you&#8217;re working with right away, without having to pass variables to a view. It&#8217;s great for quick debugging.</p>
+
+<h2>In A Model</h2>
+
+<p>Using the <span class="caps">RAILS</span>_DEFAULT_LOGGER and logger.debug is one of your best options, if not the only one. If you&#8217;re running <a href="http://mongrel.rubyforge.org/">Mongrel</a> there are some great debugging tools, but I&#8217;m not going to go into them now.</p>
+
+<h2>Outside The App Folder</h2>
+
+<h3>script/console</h3>
+
+<p>The console is an interactive ruby environment (irb) that has your entire application loaded up into it. You can try different things with your modules, check for dependencies or do maintenance. There are plenty of resources online for script/console tutorials. Have a look at this one to get started: <a href="http://www.robbyonrails.com/articles/2005/08/18/are-you-a-console-master">Robby On Rails talks about script/console</a></p>
+
+<p>To run console, just open terminal (or whatever prompt you have) and run script/console from the application root.</p>
+
+<h3>tail</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Tail_(Unix)">Unix tail</a> , Ahh, I love tail. <a href="http://en.wikipedia.org/wiki/Tail_(Unix)">tail</a> is a little unix app that will show you the end of a file&#8230; and if you use the -f option, it will &#8216;follow&#8217; the end, which keeps showing you the end of the file even if it changes.</p>
+
+<p>from the application root:</p>
+
+<div>
+  <pre><code class='bash'>tail -f log/development.log</code></pre>
+</div>
+
+
+<p>Using this, you can keep an eye on what your applicaiton is doing the whole time. Generally, when I&#8217;m developing, I am constantly tailing my development log. Just makes it easy for me.</p>
+
+<h3>script/breakpointer</h3>
+
+<p>Breakpointer is really straightforward, but for some reason it seems really complex. All you need to do is run script/breakpointer from your appplication root and then put the word &#8216;breakpoint&#8217; anywhere in your app. When you&#8217;re running your app and it hits the &#8216;breakpoint&#8217;, the breakpointer will pick it up and give you an Ruby console to work with. It works the same was as console, but from the current state of your application.</p>
+
+<p>For more information on breakpointer, have a look at <a href="http://wiki.rubyonrails.org/rails/pages/HowtoDebugWithBreakpoint">HowtoDebugWithBreakpoint</a></p>
+
+<p>Note: breakpointer has been deprecated (Rails <a href="http://dev.rubyonrails.org/changeset/6611">Changeset 6611</a>). Use <a href="http://wiki.rubyonrails.org/rails/pages/HowtoDebugWithRubyDebug">Ruby Debug</a>.</p>
+
+<h3>script/server</h3>
+
+<p>If you&#8217;re running using Locomotive or .. umm, whatever the windows version is (InstantRails) sometimes you get startup errors and can&#8217;t see what they are because they&#8217;re enclosed in the launch application.</p>
+
+<p>All you need to do is open up your terminal and type script/server, which will launch your app in webrick or mongrel. if there are any dependencies, it will spit them out and let you know why it can&#8217;t startup.</p>
+
+<h2>In Production</h2>
+
+<p>Install the <a href="http://dev.rubyonrails.org/svn/rails/plugins/exception_notification/">ExceptionNotification</a> plugin. It&#8217;s wonderful. Really. It will e-mail you if the application throws any error messages.</p>
+
+<div>
+  <pre><code class='bash'>script/plugin install http://dev.rubyonrails.org/svn/rails/plugins/exception_notification/</code></pre>
+</div>
+
+
+<h2>Just Talk About It</h2>
+
+<p>If you&#8217;re really stuck on a problem, the best thing to do is to talk to someone (or something) about it. Apparently, the part of your brain that tries to figure out the problem is different than the part of your brain that tries to describe the problem&#8230; so just trying to figure out how to explain the problem often shows you what&#8217;s wrong and helps you fix it. Even if you just have a plant, pet or robot on your desk to talk to&#8230; it&#8217;s ok, they&#8217;re listening.</p>
+
+<p>Other than that, good luck&#8230; and if you&#8217;re in Vancouver on the second tuesday of every month, come to a Brigade Meeting. :)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-05-12T00:00:00-07:00" pubdate data-updated="true">May 12<span>th</span>, 2007</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/article/'>article</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jhubert.github.io/blog/2007/05/12/debugging-your-ruby-on-rails-app/" data-via="" data-counturl="http://jhubert.github.io/blog/2007/05/12/debugging-your-ruby-on-rails-app/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2007/05/05/sharkwater/" title="Previous Post: SHARKWATER - In US theaters this fall and Now playing in Canadian theatres">&laquo; SHARKWATER - In US theaters this fall and Now playing in Canadian theatres</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2007/05/18/dating-tips-getting-out-of-your-own-way/" title="Next Post: Dating Tips - Getting out of your own way">Dating Tips - Getting out of your own way &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/25/color-picking-in-osx-lion/">Color picking on OSX Lion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/26/jardin-du-luxembourg/">Sweet Memories of Paris</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/22/tips-around-vancouver/">Tips around Vancouver, Canada</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/">Delete all tasks in a Wunderlist</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/30/translating-html-in-a-chrome-extension/">Translating HTML in a Chrome Extension</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

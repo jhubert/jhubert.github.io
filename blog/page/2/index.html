@@ -1,0 +1,706 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="This was a response to an email from a friend about why he should switch to Git from SVN. Perhaps you&#8217;ll find it useful as well. :) &#8212;&# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jhubert.github.io/blog/page/2">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jhubert.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/01/14/why-i-use-git-vs-svn/">3 Reasons I Use Git Instead of SVN</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-14T00:00:00-08:00" pubdate data-updated="true">Jan 14<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This was a response to an email from a friend about why he should switch to Git from SVN. Perhaps you&#8217;ll find it useful as well. :)</p>
+
+<p>&#8212;&#8212;&#8212;-</p>
+
+<p>Three things come to mind right away:</p>
+
+<p><strong>1) Distributed instead of centralized.</strong></p>
+
+<p>With SVN, there is one &#8220;true&#8221; copy of the code at all times. Everyone checks out the code from this one true copy and checks the code back in when you&#8217;re done. There is nothing wrong with this, and in fact, this is also what you will also usually have with Git. The big difference is that you don&#8217;t *HAVE* to have it with Git if you don&#8217;t want to.</p>
+
+<p>For example, with OnceOvers, Dan and I work off of the development installation that is up on Heroku. This acts as the &#8220;true&#8221; copy right now, meaning that Dan and I both check out  a complete version from the one on the server and push code back into it. This works great for now and is essentially the same as what you would have with SVN.</p>
+
+<p>However, as soon as we are ready to take the site live, I will be pushing the site to a production installation hosted somewhere else. This is now the production instance of our website, instead of the development one. The map looks something like this: </p>
+
+<p><img src="http://cl.ly/0C313S1x3f2N291A1y3X/Screen_shot_2011-01-14_at_6.00.30_PM.png" width="462" height="302"/></p>
+
+<p>So that means that Dan and I can keep pushing and pulling from the development server without worry. When we want to take whatever we have live, we just push the current state to the production server. Additionally, I can also keep another copy of it on GitHub (or any git server) with only a single command.</p>
+
+<p>Also, because of the distributed architecture, I can keep pieces of the code in all sorts of places. So, if I wanted to OpenSource a portion of the application but keep another portion of it closed, that&#8217;s super easy.</p>
+
+<p>The distributed piece is also interesting because you don&#8217;t need an internet connection to check in some changes. The advantage to checking in changes is that you can see where they were and roll back to that point in the future. (Kind of a like a checkpoint in Mario) If you are working in SVN, you need to commit the changes to the server before breaking the whole page again or else you might lose your progress. With git, you can check in to the repository on your laptop as many times as you want without needing to connect to the internet, so you can wipe the whole file and be right back where you were within seconds. When you do get to an internet connection, you can just &#8220;git push&#8221; it to the remote server.</p>
+
+<p>Speaking of the remote server, because both copies of the repository are full copies, you don&#8217;t have to worry about losing the repository if the hard drive on the server crashes. You just specify a new remote repo and you&#8217;re back up and running in minutes with all of the history still intact. I&#8217;ve done this a number of times just when moving to a new hosting provider.</p>
+
+<p><strong>2) Super easy to create branches of your work to try new things</strong></p>
+
+<p>Now, all this is fine and dandy and not really that compelling since most of it can be done with SVN. However, where it gets really powerful is branching and merging. </p>
+
+<p>As a programmer, even when I&#8217;m working with HTML / CSS, I might try some crazy new idea that involves editing a bunch of files even though I&#8217;m not sure it&#8217;s going to work. With SVN, because I&#8217;m working from a server copy, I would either have to checkout the entire repo into another folder and do all my craziness or I would have to start working on it and change all of my files knowing that it would be a pain in the but to go back to the beginning. With SVN this also restricts me from making little changes while in the middle of a big change.</p>
+
+<p>Lets say you&#8217;re working on a site for a client and you want to move the entire HTML / CSS structure over to HTML5 / Eric Meyer Reset from XHTML 4.1 / YUI Reset. You start work and get about 3/4 done when the client calls and says there is a typo on the live site that needs to be fixed immediately. How do you go back to the live copy and make the little change when you&#8217;re in the middle of a big change? With SVN, you would checkout a new version of the repo, make the change and check it back in. Here are three ways to do it with Git, in order of complexity.</p>
+
+<ol><li>&#8220;git stash&#8221; will literally stash all changes that you have made and revert the files back to their last commit state, as if you had just downloaded them. You can make the little change, check it in and push it to the server. When you&#8217;re ready to get back to work, you just type &#8220;git stash apply&#8221; and you are back to where you were. With SVN you can do this with a diff / patch workflow, but it&#8217;s a bit more cumbersome than just typing stash. (Thanks @snookca for the reminder)</li>
+
+<li>&#8220;git add -p filewithtypo.html&#8221; will send you into interactive / partial mode. If there are multiple edits in a file but you just want to check in one of them, this will allow you to pick which one and check it in, instead of checking in the whole file. It&#8217;s awesome. :)</li>
+
+<li>Branching. With SVN, branching was kind of a pain in the ass. A bunch of smart people who use SVN seem to think it was easy enough, but I never really used it because it always broke or screwed something up. I guess I just wasn&#8217;t smart enough. Anyway, branching and merging in git is really straight forward. Lets say you want to work on the HTML5 rewrite. You can run &#8220;git branch html5&#8221; and it will create a new space for you to work. To work in that space, just type &#8220;git checkout html5&#8221; and you are now in the html5 branch. You start making your changes and then get the call from the client about the typo. All you do is type &#8220;git checkout master&#8221; and you&#8217;re back in the clean branch pre-changes. You fix the typo, check it in, push it to the server and then type &#8220;git checkout html5&#8221; to get back to work. When you are done making all of the HTML5 changes, you can run &#8220;git checkout master&#8221; to get back to the clean branch and then type &#8220;git merge html5&#8221; to apply all the changes that you made. It&#8217;s that easy. This also lets you work on totally separate features at the same time without any conflicts since you can have as many branches as you want. No pushing or pulling necessary to switch. :)</li>
+
+</ol><p><strong>3) Cleaner and smaller folder sizes</strong></p>
+
+<p>With SVN, you get all those annoying .svn folders created in your folder structure. If one of the folders get messed up, you&#8217;re in trouble. The folders hold the &#8220;clean&#8221; copy of every file so that you can revert back to it whenever you want. If you have made changes and then somehow screw up the .svn folder, you have to do a diff of your changes, svn up and the patch the files back together. Kind of a pain in the butt. That also means that every file you checkout is duplicated.</p>
+
+<p>With Git, there is only one folder created at the root of your project directory called &#8220;.git&#8221; and it holds all of the information about the repo. Instead of storing full copies of all the files, it stores diffs from one version to another. So, it only stores records of the changes. This lets you literally &#8220;play back&#8221; the changes that you&#8217;ve made over a number of commits. This is why it is so much easier to branch and merge files. Since diff files can be fuzzy, you don&#8217;t have to compare exact copies every times which results in less collisions. Also, the diffs are generally much smaller in size than an actual file, so you save space.</p>
+
+<p>&#8212;</p>
+
+<p>That about sums it up. As for why you would use this instead of SVN, that choice is totally up to you and SVN is still a darn good version control system.</p>
+
+<p>Versions is probably the best OSX visual version control application out there, although Tower is making progress on providing a Git one ( <a href="http://www.git-tower.com/">http://www.git-tower.com/</a> ) and Gitbox is already fairly mature ( <a href="http://www.gitboxapp.com/">http://www.gitboxapp.com/</a> ). As for Kaleidoscope, it works with Git as well and ties into Gitbox already.</p>
+
+<p>Personally, I like using the command line. I just find it so easy that I haven&#8217;t found a reason not to use it yet.</p>
+
+<p>I hope that answers some of your questions. :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/01/14/21-songs-everyone-should-hear/">The 21 Best New-ish Songs That I Don&#8217;t Think Enough People Have Heard</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-14T00:00:00-08:00" pubdate data-updated="true">Jan 14<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The other day, I was hanging out with some co-workers of mine and we started talking about music. It turns out the neither of them had heard many of the songs that I was really into lately. I promised to introduce one of them to my musical tastes, and went home to make a CD.</p>
+
+<p>I then started playing the CD for a few other friends, and it turned out that NONE of them had heard most of the tracks on the CD. Had they not all really liked the CD, I would have just written myself as having odd taste in music. But since they did, I&#8217;m writing this post to make sure everyone else can be exposed to the more awesome music.</p>
+
+<p>Another thing that I realized after looking over the album is that almost all of the songs were introduced to me by <a href="http://about.me/msh">Morgan Holzer</a>. That girl has wicked taste in music and I highly recommend you check out <a href="http://www.popten.net/author/morgan-holzer/">her PopTen stuff</a>. </p>
+
+<ol><li><a href="http://jeremyhubert.com/m/2010/1.mp3">Sweet Disposition - The Temper Trap</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/2.mp3">Animal - Miike Snow</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/3.mp3">Heart Skipped A Beat - The xx</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/4.mp3">Kiss With A Fist - Florence and the Machine</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/5.m4a">Little Lion Man - Mumford &amp; Sons</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/6.mp3">Home - Edward Sharpe and the Magnetic Zeros</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/7.mp3">Sweet Sixteen - Think About Life</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/8.mp3">28 - Nano Whitman</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/9.mp3">Dance Song - Orchard</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/10.mp3">Punctual As Usual - The Parson Red Heads</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/11.mp3">Man of a Thousand Faces - Regina Spektor</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/12.mp3">Fader - The Temper Trap</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/13.m4a">The Great Defector - Bell X1</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/14.mp3">Dying Is Fine - Ra Ra Riot</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/15.m4a">Bang! Bang! - The Knux</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/16.mp3">Wish I Stayed - Ellie Goulding</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/17.mp3">I&#8217;ll Kill Her - SoKo</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/18.mp3">Paris - Friendly Fires</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/19.mp3">Edward Is Dedward - Emmy The Great</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/20.mp3">Why Do You Let Me Stay Here? - She &amp; Him</a></li>
+
+<li><a href="http://jeremyhubert.com/m/2010/21.mp3">Untouched - The Veronicas</a></li>
+
+</ol><p>Also, please don&#8217;t just download the songs. All of these artists are hardworking and deserve your dollars. You should be able to find most of them on iTunes. :)</p>
+
+<ol></ol>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/01/13/start-being-awesome/">Start Being Awesome!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-13T00:00:00-08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><img src="/tumblr_files/tumblr_lefi1h6e7I1qzu7abo1_400.png"/><br/><p>Awesome.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/01/11/removing-or-adding-www-in-a-rails-url/">Rails 3 - Removing or Adding Www in the Url</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-11T00:00:00-08:00" pubdate data-updated="true">Jan 11<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I don&#8217;t like having two separate domains that point to the same content for a number of reasons. Caching and SEO optimization are two them that make it worth dealing with for me. Here is how I deal with that in Rails 3.</p>
+
+<p>Usually, I would handle this in my webserver config file but since I&#8217;ve started using Heroku I don&#8217;t have access to a config file so the Rails application needs to handle that for me.</p>
+
+<p>One way to do the redirect is to have some code in your application_controller.rb file that checks for www. and then behaves accordingly. Like this:</p>
+
+<div>
+  <pre><code class='ruby'>before_filter :strip_www
+
+def strip_www
+  if request.env[&quot;HTTP_HOST&quot;] == &quot;myapp.com&quot;
+    redirect_to &quot;http://www.myapp.com/&quot;
+  end
+end</code></pre>
+</div>
+
+
+<p>This functions just fine, however, there is no need to load the entire application stack just to do a redirection.</p>
+
+<p>Fortunately, Rails runs on Rack which means you can run some pretty awesome middleware and a few of the guys over at <a href="http://pivotallabs.com/">pivotal labs</a> have done just that.</p>
+
+<p>Enter <a href="https://github.com/pivotal/refraction">Refraction</a>.</p>
+
+<p>Refraction is a piece of middleware that gives you a router before the request reaches your main application stack, which means you can intercept the call and perform a redirect on it without loading a bunch of unnecessary code. You can read a lot more about it in the <a href="https://github.com/pivotal/refraction">README file on GitHub</a>.</p>
+
+<p>All I&#8217;m going to show you here is how to ADD &#8220;www.&#8221; to a request that doesn&#8217;t have it. These instructions are fairly similar to the README.md, with the exception of the refraction_rules and a small change to the production.rb call.</p>
+
+<p>First, install the refraction gem. I recommend adding &#8220;<strong>gem &#8216;refraction&#8217;</strong>&#8221; to your Gemfile and running &#8220;<strong>bundle install</strong>&#8221; in your app. This will also install it on Heroku when you push.</p>
+
+<p>Once you have done that, we are going to add the following call near the top of your <strong>config/environments/production.rb</strong> file:</p>
+
+<div>
+  <pre><code class='ruby'>config.middleware.insert_before(::Rack::Lock, ::Refraction)</code></pre>
+</div>
+
+
+<p>and then create a new file inside the <strong>config/initializers/</strong> folder called <strong>refraction_rules.rb</strong> that has the following content in it:</p>
+
+<div>
+  <pre><code class='ruby'>Refraction.configure do |req|
+  req.permanent! :host =&gt; &quot;www.mydomain.com&quot; if req.host !~ /^www./
+end</code></pre>
+</div>
+
+
+<p>Once that&#8217;s done, you should be good to go. I tested this on my dev box by setting my <strong>/etc/hosts</strong> file up to point <a href="http://www.mydomain.com">www.mydomain.com</a> and mydomain.com to 127.0.0.1 which should work nicely for testing. :)</p>
+
+<p>Good luck!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/12/31/tubing-at-cypress/">Tubing at Cypress</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-31T00:00:00-08:00" pubdate data-updated="true">Dec 31<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a href="http://instagr.am/p/zeLa/"><img src="/tumblr_files/tumblr_lebowctDp61qz4mfno1_500.jpg"/></a><br/><p>Tubing at Cypress (Taken with <a href="http://instagr.am">instagram</a>)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/12/25/family-bingo/">Family Bingo!</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-25T00:00:00-08:00" pubdate data-updated="true">Dec 25<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a href="http://instagr.am/p/thUy/"><img src="/tumblr_files/tumblr_le0odgXnc11qz4mfno1_500.jpg"/></a><br/><p>Playing bingo with the family for Christmas (Taken with <a href="http://instagr.am">instagram</a>)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/12/18/revelstoke-with-tara/">Revelstoke With Tara</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-18T00:00:00-08:00" pubdate data-updated="true">Dec 18<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a href="http://instagr.am/p/nBY7/"><img src="/tumblr_files/tumblr_ldnf9bfrSj1qz4mfno1_500.jpg"/></a><br/><p>Revelstoke on a gorgeous day (Taken with <a href="http://instagr.am">instagram</a>)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/12/10/ski-shopping/">Shopping for Ski Season</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-10T00:00:00-08:00" pubdate data-updated="true">Dec 10<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a href="http://instagr.am/p/hcQI/"><img src="/tumblr_files/tumblr_ld8y64R2DM1qz4mfno1_500.jpg"/></a><br/><p>Shopping for ski season (Taken with <a href="http://instagr.am">Instagram</a> at Sports Basement - Presidio)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/12/09/changing-my-name/">Yes, I&#8217;m Changing My Name to Jeremy Baker</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-09T00:00:00-08:00" pubdate data-updated="true">Dec 9<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Summary: After five years of deliberation, I have finally decided to change my name from <strong>Jeremy Baker Hubert</strong> to <strong>Jeremy Hubert Baker</strong>. Tara is so awesome that she will be taking the Baker last name as well. :)</p>
+
+<p><strong>Some history of my father and the Hubert name</strong></p>
+
+<p>As a few people know, my dad was adopted and was raised by the Hubert family in Chevy Chase, Maryland. He was given the name Stephen Fitch Hubert by his adopted family. He spent years of his life trying to track down his birth parents with no luck, however, after he was diagnosed with Lou Gherig&#8217;s Disease the US Government finally released their names. It turns out, his birth name was Stephen Mark Gray. He changed his name in an attempt to reconnect with his birth name, and when he passed away he was legally known as Stephen Mark Grey. (Yes, he misspelled it)</p>
+
+<p>In the middle of all that was his life and during that time, among other things, he managed to get married and have two children.  My mom, being the wonderfully independant woman she is, kept her maiden name. He stuck around for about 6 years, but after he left I was the only Hubert guy in the area.</p>
+
+<p>Although I met Mrs Hubert a few times and she was very kind to my mother, she passed away when I was young. Mr Hubert had died of polio before I was even born so I never had much connection with him. The only real connection to the Hubert family now lies in my uncle, Larry Hubert, who is a wonderful man and lives in Maryland. I see him every now and then, but really not often enough.</p>
+
+<p><strong>Some history about the Baker family</strong></p>
+
+<p>All of my life, I have been Nancy Baker&#8217;s son. She did a fantastic job of raising my sister and me and has shown a tremendous amount of strength and integrity. Further down the line, Bert Baker is my grandfather and Jackie Baker was my grandmother. I have a direct connection to the Baker family and I am proud of their heritage and history. My grandfather has worked hard all of his life, and has done an amazing job of providing for his family. His father was a Sea Captain and another hard worker. The Baker lineage is strong and I am proud of their past and present&#8230; but what about their future?</p>
+
+<p>There is only one male descendent of Bert and Jackie Baker with their last name. The rest of them are either women, or have the last name from the man my aunt married. </p>
+
+<p><strong>Why am I changing my name&#8230;</strong></p>
+
+<p>I want to carry on the name of my mother and my grandparents. I want my children to have their name and be able to look back on their last name with pride. I admit, having a name that&#8217;s easier to pronounce is appealing as well and, as Tara points out, our kids will be at the front of the line. :)</p>
+
+<p>My mother seemed to feel the same way when she named me. Instead of giving me some typical middle name like Matthew, she stuck her last name in there as my middle name. It has always been rather strange for me, going through life with a last name sandwiched between two first names. (ie: Hubert Humphrey) </p>
+
+<p>Thus, it makes the decision just a bit easier. Instead of drastic name change, I&#8217;m just going to flip my last and middle names to become <strong>Jeremy Hubert Baker</strong>. </p>
+
+<p><strong>Let the complications begin!</strong></p>
+
+<p>In the old days (pre internet), changing your name was relatively easy. You could literally just start going by a new name and that was the end of it. Perhaps you would have to file some paperwork at the Bank so that they would recognize cheques made out to you.</p>
+
+<p>That definitely isn&#8217;t the case anymore.</p>
+
+<p>The process to change your name is now a legal one that takes more than three months and costs a few hundred dollars. As if to demonstrate how dated and surreal the whole thing is, you even have to put an ad in the local paper letting everyone know that you will be changing your name; as if ANYONE that knows me reads the local San Francisco newspaper.</p>
+
+<p><strong>And there there is the internet!</strong></p>
+
+<p>These days usernames, email addresses, domain names,  and other identifiers really complicate things. In my case, I have been on the internet since about 1995 getting emails, building websites, joining networks and developing a brand. I take up 9 of the 10 Google results for the name Jeremy Hubert. I am jhubert at gmail and jhubert on pretty much every social network out there. I have the jeremyhubert Yahoo! IM address and own JeremyHubert.com and jhubert.com. I was early to this whole internet thing and got a headstart. Now I want to change.</p>
+
+<p>15 years into the world wide web, I&#8217;m now a late bloomer. jbaker everything is taken. jeremybaker everything is taken. There are a *few* jeremyhbakers left. I suppose I have to hope for an overhaul of the internet in order to get that all sorted out. :p</p>
+
+<p><strong>What about my lovely wife?</strong></p>
+
+<p>Well before the wedding, I had told her my dilemma and she was happy to take whatever name I chose. However, as the wedding got closer and I still hadn&#8217;t made up my mind, we had to put something on the invitations. Because of the timeframe required to change your name, I made the call and settled on Hubert. On September 4th, Tara Lynn Purtle became Tara Lynn Hubert. At least on the wedding certificate. </p>
+
+<p>Being the loving wife she is, she has agreed to go along with my craziness and to change her name at the same time as me so that we will both be Bakers. Personally, I think Tara Baker is a pretty cute name for her, so I&#8217;m excited about that.</p>
+
+<p>We have also joked about her just becoming &#8220;Tara&#8221; and dropping the last name all together, a la Madonna or Cher.</p>
+
+<p><strong>In conclusion&#8230;</strong></p>
+
+<p>I will be taking notes as I try to transition over from Jeremy Hubert to Jeremy Baker. It is going to take a LONG time, I&#8217;m sure. I may keep Jeremy Hubert as my online presence and just use Jeremy Baker in everything formal and every day life.</p>
+
+<p>Whichever one, don&#8217;t worry. I&#8217;m not going to get mad if you call me Jeremy Hubert. I&#8217;m not going to correct you or ignore you until you say the &#8220;right&#8221; name.</p>
+
+<p>After all, a rose by any other name?</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/11/28/onceovers/">OnceOvers.com</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-28T00:00:00-08:00" pubdate data-updated="true">Nov 28<span>th</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">This site helps people raise money.</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/25/color-picking-in-osx-lion/">Color picking on OSX Lion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/26/jardin-du-luxembourg/">Sweet Memories of Paris</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/22/tips-around-vancouver/">Tips around Vancouver, Canada</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/">Delete all tasks in a Wunderlist</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/30/translating-html-in-a-chrome-extension/">Translating HTML in a Chrome Extension</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

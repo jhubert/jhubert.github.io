@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Delete all tasks in a Wunderlist - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="I&#8217;ve been experimenting with a CulturedCode Things -&gt; Wunderlist import tool, and it&#8217;s resulted in a few mix ups that left hundreds of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jhubert.github.io/blog/2011/09/02/delete-all-tasks-in-a-wunderlist">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jhubert.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Delete All Tasks in a Wunderlist</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-02T00:00:00-07:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&#8217;ve been experimenting with a CulturedCode Things -&gt; Wunderlist import tool, and it&#8217;s resulted in a few mix ups that left hundreds of items not where I wanted them. Instead of being filed in their own list, they are sitting in the inbox. Because it&#8217;s the inbox, I can&#8217;t just delete the list. To delete them all, I would have to click on each one and confirm the prompt. Kind of a pain in the butt.</p>
+
+
+
+<p>Now, Wunderlist doesn&#8217;t have an API, but what they do have is a web based version of the tool. So, I figured that I could inspect their code and then write some JavaScript to do the deletion for me. Turns out I was right.</p>
+
+
+
+<p>Here is the code I came up with. In order to use it, I&#8217;ve turned it into a bookmarklet. Just drag the following link up to your Bookmarks bar in the browser. When you open up a list in Wunderlist and click on the bookmarklet, it will confirm that you want to proceed before removing all of the items.</p>
+
+
+
+<p><a href="javascript:(function%20()%7Bfunction%20deleteAll()%7Bvar%20list=%24('ul#list'),list_id=parseInt(%24(list%5B0%5D).attr('rel'),10),list_name=%24('#list'+list_id+'%20b').html();if(list_id&gt;0)%7Bif(confirm('Are%20you%20sure%20you%20want%20to%20delete%20all%20the%20items%20in%20'+list_name))%7Blist.find('li').each(function%20()%7Bvar%20id=parseInt(%24(this).attr('id'),10),task=%7Bid:id,list_id:list_id,deleted:1%7D;%24.ajax(%7Burl:'/ajax/tasks/update/',type:'POST',data:%7B'task':JSON.stringify(task)%7D,success:function%20(response_data,text,xhrobject)%7Bvar%20response=ajaxresponse.check(response_data);if(response.status==='success')%7Bwunderlist.updateBadgeCount();%7D%7D%7D);%7D);alert('Done.%20Please%20reload%20the%20page.');%7D%7D%7DdeleteAll();%7D());">Delete All Wunderlist Items in a List</a></p>
+
+
+
+<p>If you&#8217;re curious about the actual code, you can check it out in this gist: <a href="https://gist.github.com/1188744">Delete all wunderlist items in a list</a>.</p>
+
+
+
+<p>If you have any questions, just let me know. :)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-02T00:00:00-07:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/article/'>article</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jhubert.github.io/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/" data-via="" data-counturl="http://jhubert.github.io/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/06/30/translating-html-in-a-chrome-extension/" title="Previous Post: Translating HTML in a Chrome Extension">&laquo; Translating HTML in a Chrome Extension</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/09/22/tips-around-vancouver/" title="Next Post: Tips around Vancouver, Canada">Tips around Vancouver, Canada &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/25/color-picking-in-osx-lion/">Color picking on OSX Lion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/26/jardin-du-luxembourg/">Sweet Memories of Paris</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/22/tips-around-vancouver/">Tips around Vancouver, Canada</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/">Delete all tasks in a Wunderlist</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/30/translating-html-in-a-chrome-extension/">Translating HTML in a Chrome Extension</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

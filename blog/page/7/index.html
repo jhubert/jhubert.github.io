@@ -1,0 +1,736 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="Using Globalize without changing your resource links NOTE: This page was created in order to get ideas going, and thankfully it did just that. Please &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jhubert.github.io/blog/page/7">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jhubert.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/06/10/using-globalize-without-changing-resource-links/">Using Globalize Without Changing Your Resource Links</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-06-10T00:00:00-07:00" pubdate data-updated="true">Jun 10<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Using Globalize without changing your resource links</h2>
+
+<p>NOTE: This page was created in order to get ideas going, and thankfully it did just that. Please have a look at <a href="http://www.artweb-design.de/2007/4/24/concise_and_transparently_localized_rails_url_helper_methods">Sven&#8217;s more elegant solution.</a></p>
+
+<p>One of the projects I&#8217;m working on needs to have internationalization, so almost exactly after seeing <a href="http://www.jvoorhis.com">Jeremy Voorhis</a> talk about <a href="http://www.globalize-rails.org/globalize/">Globalize</a> at Canada on Rails, I have finally installed it and taken a look around.</p>
+
+<p>Despite some limitations, such as potentially large database tables if you have a lot of languages and the disabling of :through relationships, it&#8217;s a very slick plugin. It&#8217;s almost entirely invisible. You install it, add a line to each model that you want translated and you&#8217;re pretty much good to go. Sits nicely right on top of your app.</p>
+
+<p>Now, being the eccentric perfectionist I am, I would really like the locale to be in the <span class="caps">URL</span> so that:</p>
+
+<ul>
+<li>people can bookmark their page and still have the correct language</li>
+<li>search engines will find and parse multiple languages</li>
+<li>people can send a link to their friend in the same language</li>
+</ul>
+
+
+<p>After following <a href="http://www.artweb-design.de/2007/3/16/globalize-rails-routes-setup">a wonderful Globalize tutorial</a> by Sven Fuchs my localized urls were setup in a matter of minutes, with only 1 caveat.</p>
+
+<p>When using named routes and the resourceful helpers you just need to pass the locale in as the first parameter, like this:</p>
+
+<div>
+  <pre><code class='ruby'>article_path(@current_locale,@article)</code></pre>
+</div>
+
+
+<p>Easy enough, right? Well.. not to me. Every application I build these days uses restful routes, and having to pass the current locale into each link on every page really removes the invisible nature of the Globalize plugin and seems like unnecessary meta data. I really want the app to know it&#8217;s current_locale and behave accordingly, unless I want to change the locale. It should be:</p>
+
+<div>
+  <pre><code class='ruby'>article_path(@article)</code></pre>
+</div>
+
+
+<p>Go ahead, call me picky. ;)</p>
+
+<p>So off I go, digging into the Rails 1.2 Source Code looking for the magic that will make this all work well for me. Low and behold, I found it.. and wouldn&#8217;t you know it, it was only one line that needed to be added to the define_url_helper method.</p>
+
+<div>
+  <pre><code class='erb'>#{'args &lt;&lt; { :locale =&gt; @current_locale }' if segment_keys.include?(:locale)}</code></pre>
+</div>
+
+
+<p>This line, when placed at row 78 of routing.rb prepends the current_locale to any route that has :locale defined as a key.</p>
+
+<p>A few copy and pastes and some manual testing later, I have exactly what I want.</p>
+
+<p>I have created a pastie for you to look over. It is very hackish right now, but I was just talking to Jeremy Voorhis. He said we might be able to clean it up and include it as an optional module in Globalize so that you don&#8217;t have to include yet <span class="caps">ANOTHER</span> plugin in your app.</p>
+
+<p>The Pastie: <a href="http://pastie.caboo.se/52246">Adding locale to your <span class="caps">URL</span> using Rails and Globalize</a></p>
+
+<p>Have a look. Give it a shot. Let me know what you think. :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/05/18/dating-tips-getting-out-of-your-own-way/">Dating Tips - Getting Out of Your Own Way</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-05-18T00:00:00-07:00" pubdate data-updated="true">May 18<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;m just watching Hitch (for the 5th time) and there was something that I didn&#8217;t like about the ending.</p>
+
+<p>Hitch goes through the whole movie teaching guys how to act on a date. What to do, what not to do, how to dress and what situations to put themselves in. He even goes so far as to make Albert get his back waxed. He builds a fairly tidy and successful business out of this, so obviously it&#8217;s effective.</p>
+
+<p>Then we get to the end of the movie, where he is talking to Alegra Cole and she starts listing off the things that she found endearing about Albert. The items that she mentions are all things that Hitch would never teach and would definitely consider a no-no. They are the things that made Alegra connect with Albert and that&#8217;s what builds a relationship. I believe the quote that bothers me is &#8220;Wait, that stuff worked for you?&#8221; Hitch then decides that there are no &#8220;Basic Principles&#8221; of courting and the whole theory seems to be written off. Herein lies the problem.</p>
+
+<p>What Hitch actually did for his clients was the following:</p>
+
+<p>The first thing is that provided them with an opening and created an opportunity for them to have a chance with their love interest. In today&#8217;s busy world, it&#8217;s often really hard to separate yourself from the masses and get yourself noticed by someone you&#8217;re interested in&#8230; especially in a big city.</p>
+
+<p>Secondly, and most important, he provided his clients with the feeling that they had an edge. They had a &#8220;professional&#8221; working to get them the girl. They had an ace in their sleeve and were a step up. This &#8220;edge up&#8221; allowed them to woo their interest and build a nice relationship.</p>
+
+<p>There was, however, no edge. All they really got was a reason to have the confidence they should have in the first place. The confidence to stand next to the person they like and actually feel like they are allowed to be there. The confidence to engage that person in a conversation and give them the opportunity to get to know each other. The confidence that yes, they actually <span class="caps">COULD</span> do this.</p>
+
+<p>Having that confidence in yourself allows the other person to get to know who you are, without your own personal insecurities getting in the way. No matter what you do, the <strong>real</strong> you is still going to shine through. If not right away, it will at some point in the near future&#8221;¦ and no matter what anyone says, it&#8217;s not the gloss that people fall in love with.. it&#8217;s the little things that make you who you are. And, as I&#8217;ve said before, we all have our bad habits and weird idiosyncrasies but along with those come the unique and wonderful things that someone is going to end up loving.</p>
+
+<p>So, with that in mind, here&#8217;s to the Hitches in every city. The friends, moments and wing-men that help you get out of your own way and get to know the person you&#8217;re interested in.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/05/12/debugging-your-ruby-on-rails-app/">Debugging Your Ruby on Rails App</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-05-12T00:00:00-07:00" pubdate data-updated="true">May 12<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Debugging your Ruby on Rails App</h2>
+
+<p>I gave a very quick and dirty presentation tonight at the <a href="http://vancouver.rubybrigade.com">Vancouver Ruby Brigade</a> meeting. Here are my notes from that talk.</p>
+
+<p>There are a bunch of great tools that help you debug your application in Rails. Here is a quick runthrough.</p>
+
+<h2>In A View</h2>
+
+<div>
+  <pre><code class='erb'>&lt;%= debug @object %&gt;
+    or
+    &lt;%= debug 'string' %&gt;
+    or
+    &lt;%= 'string'.inspect %&gt;</code></pre>
+</div>
+
+
+<p>This will output the data directly on to the page. It&#8217;s very useful for taking a look at what you&#8217;re working with in the view, or to check if the variable contains any data at all. I use it all the time when I&#8217;m throwing up the Show views. I just dump out the object using debug and then use the data to build my layout.</p>
+
+<h2>In A Controller</h2>
+
+<div>
+  <pre><code class='ruby'>logger.debug &quot;The object is #{@object}&quot;
+
+    RAILS_DEFAULT_LOGGER.debug @object</code></pre>
+</div>
+
+
+<p>Both of these methods will print the the standard logger. The logger.debug method works within your application. The <span class="caps">RAILS_DEFAULT_LOGGER</span> will work inside the Rails framework (if you dare dive into it) or inside any libraries where logger is not defined.</p>
+
+<div>
+  <pre><code class='ruby'>return render :text =&gt; &quot;The object is #{@object}&quot;</code></pre>
+</div>
+
+
+<p>The render :text call will dump the text to the screen and halt execution of the current action. This will allow you to see what you&#8217;re working with right away, without having to pass variables to a view. It&#8217;s great for quick debugging.</p>
+
+<h2>In A Model</h2>
+
+<p>Using the <span class="caps">RAILS</span>_DEFAULT_LOGGER and logger.debug is one of your best options, if not the only one. If you&#8217;re running <a href="http://mongrel.rubyforge.org/">Mongrel</a> there are some great debugging tools, but I&#8217;m not going to go into them now.</p>
+
+<h2>Outside The App Folder</h2>
+
+<h3>script/console</h3>
+
+<p>The console is an interactive ruby environment (irb) that has your entire application loaded up into it. You can try different things with your modules, check for dependencies or do maintenance. There are plenty of resources online for script/console tutorials. Have a look at this one to get started: <a href="http://www.robbyonrails.com/articles/2005/08/18/are-you-a-console-master">Robby On Rails talks about script/console</a></p>
+
+<p>To run console, just open terminal (or whatever prompt you have) and run script/console from the application root.</p>
+
+<h3>tail</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Tail_(Unix)">Unix tail</a> , Ahh, I love tail. <a href="http://en.wikipedia.org/wiki/Tail_(Unix)">tail</a> is a little unix app that will show you the end of a file&#8230; and if you use the -f option, it will &#8216;follow&#8217; the end, which keeps showing you the end of the file even if it changes.</p>
+
+<p>from the application root:</p>
+
+<div>
+  <pre><code class='bash'>tail -f log/development.log</code></pre>
+</div>
+
+
+<p>Using this, you can keep an eye on what your applicaiton is doing the whole time. Generally, when I&#8217;m developing, I am constantly tailing my development log. Just makes it easy for me.</p>
+
+<h3>script/breakpointer</h3>
+
+<p>Breakpointer is really straightforward, but for some reason it seems really complex. All you need to do is run script/breakpointer from your appplication root and then put the word &#8216;breakpoint&#8217; anywhere in your app. When you&#8217;re running your app and it hits the &#8216;breakpoint&#8217;, the breakpointer will pick it up and give you an Ruby console to work with. It works the same was as console, but from the current state of your application.</p>
+
+<p>For more information on breakpointer, have a look at <a href="http://wiki.rubyonrails.org/rails/pages/HowtoDebugWithBreakpoint">HowtoDebugWithBreakpoint</a></p>
+
+<p>Note: breakpointer has been deprecated (Rails <a href="http://dev.rubyonrails.org/changeset/6611">Changeset 6611</a>). Use <a href="http://wiki.rubyonrails.org/rails/pages/HowtoDebugWithRubyDebug">Ruby Debug</a>.</p>
+
+<h3>script/server</h3>
+
+<p>If you&#8217;re running using Locomotive or .. umm, whatever the windows version is (InstantRails) sometimes you get startup errors and can&#8217;t see what they are because they&#8217;re enclosed in the launch application.</p>
+
+<p>All you need to do is open up your terminal and type script/server, which will launch your app in webrick or mongrel. if there are any dependencies, it will spit them out and let you know why it can&#8217;t startup.</p>
+
+<h2>In Production</h2>
+
+<p>Install the <a href="http://dev.rubyonrails.org/svn/rails/plugins/exception_notification/">ExceptionNotification</a> plugin. It&#8217;s wonderful. Really. It will e-mail you if the application throws any error messages.</p>
+
+<div>
+  <pre><code class='bash'>script/plugin install http://dev.rubyonrails.org/svn/rails/plugins/exception_notification/</code></pre>
+</div>
+
+
+<h2>Just Talk About It</h2>
+
+<p>If you&#8217;re really stuck on a problem, the best thing to do is to talk to someone (or something) about it. Apparently, the part of your brain that tries to figure out the problem is different than the part of your brain that tries to describe the problem&#8230; so just trying to figure out how to explain the problem often shows you what&#8217;s wrong and helps you fix it. Even if you just have a plant, pet or robot on your desk to talk to&#8230; it&#8217;s ok, they&#8217;re listening.</p>
+
+<p>Other than that, good luck&#8230; and if you&#8217;re in Vancouver on the second tuesday of every month, come to a Brigade Meeting. :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/05/05/sharkwater/">SHARKWATER - in US Theaters This Fall and Now Playing in Canadian Theatres</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-05-05T00:00:00-07:00" pubdate data-updated="true">May 5<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a href="http://www.sharkwater.com/">SHARKWATER - In US theaters this fall and Now playing in Canadian theatres</a>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/04/01/illanti-cart/">Illanti Cart</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-04-01T00:00:00-07:00" pubdate data-updated="true">Apr 1<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">When I finally got frustrated by the so called &#8220;easy to implement&#8221; shopping cart systems, I sat down for two days and wrote my own. From concept to processing live transactions in less than 48 hours. It includes an admin panel, full payment services support and is quotes as being &#8220;the most customizable cart [they&#8217;ve] ever used.&#8221; I have now sold a few copies of the cart, one of which powered the official store for a US basketball team.</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/02/01/illanti-job-board/">Illanti Job Board</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-02-01T00:00:00-08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">After a playful challenge from a friend, I sat down and wrote job board application in 48 minutes flat. It included RSS feeds, Paypal payment support and an admin panel. It has since been packaged and sold off as a product. For a while, it powered Mashable.com&#8217;s marketplace.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/10/28/adventures-in-disneyland/">My Adventures as a 25 Year Old in Disneyland</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-10-28T00:00:00-07:00" pubdate data-updated="true">Oct 28<span>th</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Disneyland is awesome!</h2>
+
+<p>You know, I didn&#8217;t think I&#8217;d like it. I was sitting in Anaheim all by myself. I had been working almost non-stop and hadn&#8217;t had much time to even look around the hotel, let alone check out Anaheim. However, my client cancelled one of our meetings and convinced me that since I was only two blocks away from Disneyland I had better go now while I had the chance. So off I went, all by myself, to Disneyland.</p>
+
+<p>Granted, I didn&#8217;t intend to go alone. I sent messages to all the people I knew in LA (and a few that I didn&#8217;t) trying to find someone who would go with me, but it being Halloween weekend, everyone was already going to parties that I apparently wasn&#8217;t invited to (granted they were over an hour away). I had no idea how Disneyland could be fun on a Saturday night without anyone to talk to while I stood in line, listening to screaming children. I wasn&#8217;t really looking forward to it, to be honest.</p>
+
+<p>My first impressions of Disneyland were pretty much what I expected. Once you walk through the gates and go under the train tracks, you&#8217;re in a whole new world. You can&#8217;t see any of the buildings around you anymore and you&#8217;re completely immersed in the brilliant marketing that is Disney. The lines were just as long as I had expected (a good hour and fifteen minutes for Space Mountain) and even though I really had nothing to do but go on rides, the thought of standing in line just really didn&#8217;t appeal for me.</p>
+
+<p>So what did I do? I talked to people. I walked around with my camera taking photos and introducing myself to staff and other people who seemed nice. I asked questions about Disneyland, about the park, the history and the rides. My first attempt at a ride was <a href="http://en.wikipedia.org/wiki/Buzz_Lightyear_Astro_Blasters">Buzz Lightyear Astro Blasters</a>, since I was told by someone that it was a heck of a lot of fun. I used their <a href="http://en.wikipedia.org/wiki/FASTPASS">FastPass</a> system to get a return time (an hour and a half later) and before heading to walk around again, I stopped to talk to one of the nice girls at the front of the ride. Sarah, as her nametag read, was kind enough to tell me all about how the FastPass works and how to strategically get the shortest times possible. Tips like hitting space mountain right before the fireworks end, etc.</p>
+
+<p style="float: right;">
+  <a href="http://www.flickr.com/photos/jeremyhubert/291225675/" title="Photo Sharing"><img src="http://static.flickr.com/118/291225675_780443f1bd_m.jpg" width="160" height="240" alt="IMG_9341.JPG" /></a>
+</p>
+
+
+<p>After thanking her for her help, I walked around to Fantasyland and Toontown taking pictures and killing time until I head back to Buzz Lightyear at 7:30pm. Despite being for really young kids, Toontown was actually one of the places I was most interested in. I was a pretty big fan of the animated cartoons when I was a kid, so seeing Goofy&#8217;s house, meeting Mickey and just checking out the wonderful architecture of the area was very cool for me. I love how overdone everything is. Watching old Mickey cartoons while waiting in line to meet the famous mouse was also a nice blast back in the past.</p>
+
+<p>With 7:30 rapidly approaching, I headed back towards the Buzz Lightyear ride. After two hours in Disneyland, I had still not gone on a single ride. I had only 4.5 hours until the parked closed, so it was about time I saw what they really had to offer. That&#8217;s when it started getting fun. :)</p>
+
+<p><strong>7:28 PM</strong></p>
+
+<p><a href="http://www.flickr.com/photos/jeremyhubert/291224967/" title="Photo Sharing"><img src="http://static.flickr.com/122/291224967_20480c20f0_m.jpg" width="240" height="160" alt="IMG_9375.JPG" /></a></p>
+
+<p>I walked through the FastPass gate for Astro Blasters and ran into Sarah at the second position. (In the FastPass rides, there are usually three positions; Entrance Gate, FastPass taker and the actual ride.) She smiled at me and let me hang onto my FastPass so that I could go again. By the time I was at the ride, she had moved to the third position and slipped me a handful of FastPasses so that I could take the ride as much as I wanted. Awesome! Sarah rocked! The ride itself is pretty fun as well. You get a little gun and have to blast targets as you defeat Zurg. I think the 10 year old kid in front of me kicked my ass though. :p</p>
+
+<p><strong>7:50 PM</strong></p>
+
+<p>Heading through Frontierland now, I walk past <a href="http://en.wikipedia.org/wiki/Big_Thunder_Mountain_Railroad">Big Thunder Mountain Railroad</a> and stop to talk to the girl at the gate. I ask her how long the line is and if it&#8217;s worth the wait. She says it&#8217;s not bad, and after realizing that it&#8217;s my first time she asks me where my 1st Time pin is (my what?!) and hands me a FastPass for the ride! :D I hop into the FastPass line and work my way down to the ride. On the way there, I hear a family talking about what rides they&#8217;ve been on and how they are going to get on more with the limited FastPass times they have. Lucky for them, I happen to have a few FastPasses kicking around, so I offer them enough passes to get them all on Astro Blaster and I&#8217;m greeted with a huge thank you from the kids and the parents. They should really be thanking Sarah, but I&#8217;m more than happy to pass it on.</p>
+
+<p>Big Thunder was the first ride that I really cracked a true smile on. It really set the mood for the rest of the night. I&#8217;ve been on a lot of roller costers, but something about this one really made me smile. I got off the ride and was so happy that I went back to the girl at the gate (can&#8217;t remember her name) and gave her a big hug.</p>
+
+<p><strong>8:15 PM</strong></p>
+
+<p>I head back to check Space Mountain during the Parade, still over an hour wait. Nope, not worth it. I turn around and decide to stop by Astro Blasters again to thank Sarah and see if I can beat the darn 10 year old. Nope, he still schooled me. ;) Only 3 hours and 45 minutes left.</p>
+
+<p><strong>8:45 PM</strong></p>
+
+<p>This is where it really picked up. I was standing in front of the Pirates of the Caribbean and I asked really nice looking girl named Katie what all the people lining up was for. She explained to me that it was for the 9pm show of <a href="http://en.wikipedia.org/wiki/Fantasmic">Fantasmic</a>!. I then asked her where the best place to watch it from was, and we got into a talk about Disneyland. She turns on the gears, tells me to wait and runs off. Apparently, she also worked in Fantasyland and was going to try and get me onto her favorite ride Small World without me waiting in line. After being unable to get anyone on the phone, she gave me a &#8216;Citizen of Disneyland&#8217; pin and I went on the Pirates of the Caribbean ride before the fireworks at 9:30pm.</p>
+
+<p>Pirates was pretty good, but nothing compared to some of the other rides. A tremendous amount of detail though. The ride was originally done way before the movie came out, but it has been updated recently to slide Johnny Depp into it. Other than that, it&#8217;s a fairly docile water ride. Surprising for a ride that has had multiple hour lineups.</p>
+
+<p><strong>9:30 PM</strong></p>
+
+<p><a href="http://www.flickr.com/photos/jeremyhubert/291223846/" title="Photo Sharing"><img src="http://static.flickr.com/111/291223846_234f04dc58_m.jpg" width="240" height="160" alt="IMG_9400.JPG" /></a></p>
+
+<p>The Pirates of the Caribbean took longer to get through than I expected, so I had to book it to the fireworks as quickly as possible. I ended up getting a really nice spot directly in front of the Castle, but with only about 10 minutes of the show left, so I think I missed most of it. Once that was done, I stop to do a little swing dancing with a fairly cute girl from Orange County before heading back to the Fantasmic show in order to get good seats.</p>
+
+<p><strong>9:50 PM</strong></p>
+
+<p>I bump into Katie again and she tells me exactly where to go in order to get the best spot for the show. I end up right in front of the show, dead center. Perfect view. Of course, I&#8217;m there 40 minutes early, so I spent the next 40 minutes sitting on the ground striking up random conversations with strangers. Including a conversation with a very good looking girl about how she never realized how dark and evil Disney was until she came to Disneyland. Funny, that was always what I liked about Disney. :p</p>
+
+<p><strong>10:30 PM</strong></p>
+
+<p>Let me tell you.. <a href="http://en.wikipedia.org/wiki/Fantasmic">Fantasmic</a>! is amazing. I was expecting it to be interesting, but it was unbelievable. They combine live action with video projected onto a wall of water, and the end result is something that&#8217;s very hard to describe in words. It&#8217;s an absolutely wonderful musical and visual show about the good and bad parts of your imagination and how you can control it. I&#8217;m not sure I&#8217;d let little kids watch it. It&#8217;s really quite dark and scary.</p>
+
+<p>Tom Sawyer&#8217;s cabin turns into a dragon, Hook&#8217;s pirate ship sails through the lagoon, Steamboat Willie goes for a cruiseâ€¦ everything. Check <a href="http://en.wikipedia.org/wiki/Fantasmic">the wikipedia entry</a>! for more details. It&#8217;s just killer.</p>
+
+<p><strong>11:00 PM</strong></p>
+
+<p>I meet up with Katie again after the show, and she decides it&#8217;s time I saw Fantasyland. Let me tell you, that girl really knew how to make someone feel special at Disneyland. Had it not been for her, I think this story might have ended after Fantasmicâ€¦ but she was just wicked. The next 60 minutes is a blur, but I&#8217;ll give you the coles notes version. She managed to backdoor me into all the rides in Fantasyland. In a 30 minute period, I went on 4 rides in Fantasyland; <a href="http://en.wikipedia.org/wiki/Storybook_Land_Canal_Boats">Storybook Land Canal Boats</a>, <a href="http://en.wikipedia.org/wiki/Peter_Pan%27s_Flight">Peter Pan&#8217;s Flight</a>, <a href="http://en.wikipedia.org/wiki/Pinocchio%27s_Daring_Journey">Pinocchio&#8217;s Daring Journey</a>, and <a href="http://en.wikipedia.org/wiki/Mr._Toad%27s_Wild_Ride">Mr. Toad&#8217;s Wild Ride</a> . Katie introduced me to Pat, who was the <span class="caps">REALLY</span> nice woman in charge of Fantasyland and Pat let the people at the gates know that I was coming. It was rocking. I was a Disneyland <span class="caps">VIP</span>. Katie even managed to find me a 1st Visit Pin (At last! haha).</p>
+
+<p><strong>11:45 PM</strong></p>
+
+<p>Last but not least, Katie handed me a &#8216;Free Ride&#8217; pass so that I could get on Space Mountain before the park closed. She walked with me over to Space Mountain and told me all about Disneyland, including how much she liked working there and what happened to 2,000 Leagues Under the Sea (Yay! Nemo!) We parted ways at Space Mountain and Bryson welcomed me to the ride and ushered me up the FastPass line. At 11:54 <span class="caps">PM I</span> sat down in the car for Space Mountain, my last ride at Disneyland.</p>
+
+<p>Space Mountain, by the way, is the fastest roller coaster I think I have ever been on. They can probably get away with it because it&#8217;s pitch black so people can&#8217;t see how fast they are going or how close they are coming to other pieces of the ride. I mean it, it&#8217;s really fast. 35 miles per hour according to Wikipedia. That&#8217;s driving speed in Canada.</p>
+
+<p>AAAAnd I&#8217;m done. That was Disneyland for me. As it turns out, I probably had more fun in 6.5 hours by myself than I would have if I&#8217;d gone with someone else. Of course, I really don&#8217;t think it would have been nearly as much fun if it wasn&#8217;t for Katie, Sarah, Pat, Mike, Bryson and Lewis (Mike and Lewis were at the gates of the Fantasyland rides that I went on). They really all went above and beyond to make sure that I had a good time, and they were very successful. (If you guys read this, thanks a lot!)</p>
+
+<p><a href="http://www.flickr.com/photos/jeremyhubert/291223147/" title="Photo Sharing"><img src="http://static.flickr.com/121/291223147_5fb13f7b1d_m.jpg" width="240" height="160" alt="IMG_9514.JPG" /></a></p>
+
+<p>So, let this be a lesson to all of you.</p>
+
+<p><strong>If you&#8217;re a loner, at least be a nice loner and you never know what good might come of it.</strong></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/09/01/spillr/">Spillr.com</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-09-01T00:00:00-07:00" pubdate data-updated="true">Sep 1<span>st</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">A silly idea though up by a friend and I one day. Spillr is an anonymous question system where people can ask ANY question they want and other people can answer yes or no. We collect age, gender, city, state, country and hesitation time for each answer and then use the data for fun little statistics. The code base for the question engine ended up being purchased by a company that has used it to power their facebook app.
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/09/01/render-partial-if-exists/">Render Partial if Exists in Ruby on Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-09-01T00:00:00-07:00" pubdate data-updated="true">Sep 1<span>st</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Just some handy little methods I wrote today:</p>
+
+<script src="http://gist.github.com/123407.js"></script>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2006/09/01/hoomai/">Hoomai</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2006-09-01T00:00:00-07:00" pubdate data-updated="true">Sep 1<span>st</span>, 2006</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">A personalized version of Spillr. I consider it a third person personality test. Users sign up and then are provided with an encrypted link that they can give to friends. The friends who follow the link are then asked 40 questions about the user. Some of the questions are marked as being personality based and those answers help determine the users&#8217; &#8220;projected personality.&#8221; Apart from that, it&#8217;s also just been fun finding out what percentage of your friends would lend you $100.
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/8/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/6/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/25/color-picking-in-osx-lion/">Color picking on OSX Lion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/26/jardin-du-luxembourg/">Sweet Memories of Paris</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/22/tips-around-vancouver/">Tips around Vancouver, Canada</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/">Delete all tasks in a Wunderlist</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/30/translating-html-in-a-chrome-extension/">Translating HTML in a Chrome Extension</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

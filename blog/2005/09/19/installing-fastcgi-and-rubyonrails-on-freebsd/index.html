@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Installing FastCGi and RubyOnRails on FreeBSD - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="Assumptions We are going to assume that Apache2 is already installed with mod_fastcgi. We are also going to assume that Ruby has already been &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jhubert.github.io/blog/2005/09/19/installing-fastcgi-and-rubyonrails-on-freebsd">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jhubert.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Installing FastCGi and RubyOnRails on FreeBSD</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2005-09-19T00:00:00-07:00" pubdate data-updated="true">Sep 19<span>th</span>, 2005</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Assumptions</h2>
+
+<p>We are going to assume that Apache2 is already installed with mod_fastcgi. We are also going to assume that Ruby has already been installed from Ports. Please see <a href="#appendix1">Appendix 1</a> for a list of installed packages in my environment.</p>
+
+<h2>Step 1</h2>
+
+<p>Download the latest version of FastCGI from <a href="http://www.fastcgi.com/dist/">http://www.fastcgi.com/dist/</a></p>
+
+<h2>Step 2</h2>
+
+<p>Install the Rails bindings from Ports</p>
+
+<div>
+  <pre><code class='bash'>cd /usr/ports/www/rubygem-rails
+    make install clean</code></pre>
+</div>
+
+
+<h2>Step 3</h2>
+
+<p>Install FastCGI from Source</p>
+
+<div>
+  <pre><code class='bash'>tar -xzf fcgi-2.4.0.tar.gz
+    cd fcgi-2.4.0
+    ./configure
+    make install clean</code></pre>
+</div>
+
+
+<h2>Step 4</h2>
+
+<p>Install the Ruby FastCGI Bindings using Gem</p>
+
+<div>
+  <pre><code class='bash'>gem install fcgi --
+      --with-fcgi-include=/usr/local/include
+      --with-fcgi-lib=/usr/local/lib</code></pre>
+</div>
+
+
+<h2>Step 5</h2>
+
+<p>To setup the default website, edit your Apache2 configuration file and add the following lines:</p>
+
+<div>
+  <pre><code class='xml'>&lt;Directory /var/www/&gt;
+        AllowOverride all
+    &lt;/Directory&gt;
+
+    LoadModule fastcgi_module modules/mod_fastcgi.so
+
+    AddHandler fastcgi-script .fcgi
+
+    &lt;VirtualHost *:80&gt;
+        ServerAdmin webmaster@example.com
+        DocumentRoot /var/www/rails/testapp/public
+        ServerName www.example.com
+        ErrorLog /var/log/httpd/testapp-error_log
+        CustomLog /var/log/httpd/testapp-access_log common
+        Options Indexes ExecCGI FollowSymLinks
+        RewriteEngine On
+    &lt;/VirtualHost&gt;</code></pre>
+</div>
+
+
+<h2>Step 6</h2>
+
+<p>You&#8217;re done. You can now setup your web app. :) For more information on configuring your application to use fastcgi, please see the RailsWiki entry: <a href="http://wiki.rubyonrails.com/rails/show/HowtoSetupApacheWithFastCGIAndRubyBindings">HowtoSetupApacheWithFastCGIAndRubyBindings</a></p>
+
+<h2><a name="appendix1">Appendix 1</a></span></h2>
+
+<p>This is a pkg_info dump from the server before the install process was started. You can use this as a reference on your system.</p>
+
+<pre><code>apache-2.0.54 - Version 2 of Apache web server with prefork MPM.
+apr-nothr-db4-1.0.1_1 - The Apache Group's Portability Library
+bash-2.05b.007_2 - The GNU Bourne Again Shell
+bsdiff-4.2 - Generates and applies patches to binary files
+db42-4.2.52_4 - The Berkeley DB package, revision 4.2
+expat-1.95.8 - XML 1.0 parser written in C
+freebsd-update-1.6_1 - Fetches and installs binary updates to FreeBSD
+gettext-0.14.1 - GNU gettext package
+libiconv-1.9.2_1 - A character set conversion library
+mod_fastcgi-2.4.2 - A fast-cgi module for Apache
+mysql-client-4.1.11_1 - Multithreaded SQL database (client)
+mysql-server-4.1.11_1 - Multithreaded SQL database (server)
+neon-0.24.7 - An HTTP and WebDAV client library for Unix systems
+ngrep-1.43 - Network grep
+perl-5.8.6_2 - Practical Extraction and Report Language
+ruby-1.8.2_4 - An object-oriented interpreted scripting language
+ruby18-gems-0.8.11 - Package management framework for the Ruby language
+rubygem-actionmailer-1.0.1 - Easy email delivery and testing for Ruby
+rubygem-actionpack-1.9.1 - Action Controller and Action View of Rails MVC Framework
+rubygem-actionwebservice-0.8.1_1 - Simple support for publishing Web Service APIs for Rails ap
+rubygem-activerecord-1.11.1 - Object-relational mapping layer for Rails MVC Framework
+rubygem-activesupport-1.1.1 - Utility classes and extension that are required by Rails MV
+rubygem-rails-0.13.1 - MVC web application framework
+rubygem-rake-0.5.4 - Ruby Make
+subversion-1.1.4 - Version control system
+sudo-1.6.8.8 - Allow others to run commands as root
+vim-lite-6.3.62 - Vi 'workalike', with many additional features (Lite package)
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2005-09-19T00:00:00-07:00" pubdate data-updated="true">Sep 19<span>th</span>, 2005</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/article/'>article</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jhubert.github.io/blog/2005/09/19/installing-fastcgi-and-rubyonrails-on-freebsd/" data-via="" data-counturl="http://jhubert.github.io/blog/2005/09/19/installing-fastcgi-and-rubyonrails-on-freebsd/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2005/07/26/spammer-beaten-to-death/" title="Previous Post: Spammer gets a beat down">&laquo; Spammer gets a beat down</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2005/10/01/digifonica/" title="Next Post: Digifonica">Digifonica &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/25/color-picking-in-osx-lion/">Color picking on OSX Lion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/26/jardin-du-luxembourg/">Sweet Memories of Paris</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/22/tips-around-vancouver/">Tips around Vancouver, Canada</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/">Delete all tasks in a Wunderlist</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/30/translating-html-in-a-chrome-extension/">Translating HTML in a Chrome Extension</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

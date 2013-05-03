@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: archived | My Octopress Blog]]></title>
+  <link href="http://jhubert.github.io/blog/categories/archived/atom.xml" rel="self"/>
+  <link href="http://jhubert.github.io/"/>
+  <updated>2013-05-03T10:03:55-07:00</updated>
+  <id>http://jhubert.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Illanti Cart]]></title>
+    <link href="http://jhubert.github.io/blog/2007/04/01/illanti-cart/"/>
+    <updated>2007-04-01T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2007/04/01/illanti-cart</id>
+    <content type="html"><![CDATA[<p>When I finally got frustrated by the so called "easy to implement" shopping cart systems, I sat down for two days and wrote my own. From concept to processing live transactions in less than 48 hours. It includes an admin panel, full payment services support and is quotes as being "the most customizable cart [they've] ever used." I have now sold a few copies of the cart, one of which powered the official store for a US basketball team.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Illanti Job Board]]></title>
+    <link href="http://jhubert.github.io/blog/2007/02/01/illanti-job-board/"/>
+    <updated>2007-02-01T00:00:00-08:00</updated>
+    <id>http://jhubert.github.io/blog/2007/02/01/illanti-job-board</id>
+    <content type="html"><![CDATA[<p>After a playful challenge from a friend, I sat down and wrote job board application in 48 minutes flat. It included RSS feeds, Paypal payment support and an admin panel. It has since been packaged and sold off as a product. For a while, it powered Mashable.com's marketplace.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Spillr.com]]></title>
+    <link href="http://jhubert.github.io/blog/2006/09/01/spillr/"/>
+    <updated>2006-09-01T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2006/09/01/spillr</id>
+    <content type="html"><![CDATA[<p>A silly idea though up by a friend and I one day. Spillr is an anonymous question system where people can ask ANY question they want and other people can answer yes or no. We collect age, gender, city, state, country and hesitation time for each answer and then use the data for fun little statistics. The code base for the question engine ended up being purchased by a company that has used it to power their facebook app.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hoomai]]></title>
+    <link href="http://jhubert.github.io/blog/2006/09/01/hoomai/"/>
+    <updated>2006-09-01T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2006/09/01/hoomai</id>
+    <content type="html"><![CDATA[<p>A personalized version of Spillr. I consider it a third person personality test. Users sign up and then are provided with an encrypted link that they can give to friends. The friends who follow the link are then asked 40 questions about the user. Some of the questions are marked as being personality based and those answers help determine the users' "projected personality." Apart from that, it's also just been fun finding out what percentage of your friends would lend you $100.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Kidzworld]]></title>
+    <link href="http://jhubert.github.io/blog/2006/05/01/kidzworld/"/>
+    <updated>2006-05-01T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2006/05/01/kidzworld</id>
+    <content type="html"><![CDATA[<p>Kidzworld</p>
+
+<p>In 2006 I designed and developed a kids social networking site to replace their 500,000 member online magazine. I did all of the development and planning by myself. It was huge. Looking back on it, doing it by myself was stupid.</p>
+]]></content>
+  </entry>
+  
+</feed>

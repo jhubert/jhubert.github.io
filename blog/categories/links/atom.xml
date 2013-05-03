@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: links | My Octopress Blog]]></title>
+  <link href="http://jhubert.github.io/blog/categories/links/atom.xml" rel="self"/>
+  <link href="http://jhubert.github.io/"/>
+  <updated>2013-05-03T10:03:55-07:00</updated>
+  <id>http://jhubert.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[the persistence of memory]]></title>
+    <link href="http://jhubert.github.io/blog/2007/10/08/the-persistence-of-memory/"/>
+    <updated>2007-10-08T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2007/10/08/the-persistence-of-memory</id>
+    <content type="html"><![CDATA[<p><a href="http://www.futureofthebook.org/blog/archives/2007/05/so_hard_to_forget_1.html">the persistence of memory</a></p>
+]]></content>
+  </entry>
+  
+</feed>

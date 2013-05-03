@@ -1,0 +1,720 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="http://www.youtube.com/watch?feature=endscreen&NR=1&v=r58ka0k3nlE">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jhubert.github.io/blog/page/3">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jhubert.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/06/01/genjuice-interview/">Interviewed by GenJuice About Entrepreneurialism</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-01T00:00:00-07:00" pubdate data-updated="true">Jun 1<span>st</span>, 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">http://www.youtube.com/watch?feature=endscreen&NR=1&v=r58ka0k3nlE</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/11/11/install-google-go-on-osx/">Installing Google Go on OSX Snow Leopard</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-11-11T00:00:00-08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>How to install the Go programming language on OSX Snow Leopard</h2>
+
+<h3>Assumptions</h3>
+
+<p>Before you follow these steps, you should have <a href="http://developer.apple.com/TOOLS/Xcode/">XTools</a> installed. You should also be running Snow Leopard as your OS.</p>
+
+<p>These instructions should also work for Leopard, although you may have to use GOARCH=386.</p>
+
+<p>All of these steps will be performed in Terminal</p>
+
+<h2>Step 1 - Directories and Environment Variables</h2>
+
+<p>Google Go has a number of environment variables that are required when running: <code>$GOROOT</code>, <code>$GOOS</code>, <code>$GOARCH</code> and <code>$GOBIN</code>. You can find out more about these variables at by reading <a href="http://golang.org/doc/install.html#tmp_17">Go&#8217;s general installation document</a>.</p>
+
+<p>For our purposes, we are going to use the following settings:</p>
+
+<p><code>
+GOROOT=$HOME/Go&lt;br /&gt;
+GOOS=darwin&lt;br /&gt;
+GOARCH=amd64&lt;br /&gt;
+GOBIN=$HOME/bin&lt;br /&gt;
+</code>
+You can use the following command to automatically place them at the end of your ~/.bashrc file:</p>
+
+<pre><code>cat &gt;&gt; ~/.bashrc &lt;&lt;EOF
+
+export GOROOT=\$HOME/Go
+export GOOS=darwin
+export GOARCH=amd64
+export GOBIN=\$HOME/bin
+EOF
+</code></pre>
+
+<p>Now use the <code>source</code> command to apply those changes to your current session:</p>
+
+<pre><code>source ~/.bashrc
+</code></pre>
+
+<p>Also, we have to create the bin directory and add it to your system paths:</p>
+
+<pre><code>mkdir -p $HOME/bin
+echo "$HOME/bin" &gt; go
+sudo mv go /etc/paths.d/
+eval `/usr/libexec/path_helper -s`
+</code></pre>
+
+<p style="background-color: #ffe; padding: 3px;">
+  For more information on the /etc/paths.d/ setup in Leopard, you can read <a href="http://littlesquare.com/2008/01/24/upgraded-to-leopard-making-use-of-etcpathsd-and-path_helper/">this blog post on paths</a>.
+</p>
+
+
+<h2>Step 2 - Getting The Source</h2>
+
+<p>Google is using <a href="http://mercurial.selenic.com/wiki/Download">Mercurial</a> to handle the source code. If you don&#8217;t already have it installed, you can install it quickly and easily with the following command:</p>
+
+<pre><code>sudo easy_install mercurial
+</code></pre>
+
+<p>This will automatically install the mercurial package on your system. Once that is done, you can run the <code>hg</code> command to checkout Go&#8217;s source:</p>
+
+<pre><code>hg clone -r release https://go.googlecode.com/hg/ $GOROOT
+</code></pre>
+
+<p>The source code will be checked out to the $GOROOT that we specified in the .bashrc settings.</p>
+
+<h2>Step 3 - Installation</h2>
+
+<p style="background-color: #ffe; padding: 3px;">
+  From this point on, you&#8217;ve done the custom OSX bits. The following are essentially the same instructions as <a href="http://golang.org/doc/install.html#tmp_17">Go&#8217;s official installation document</a>.
+</p>
+
+
+<p>Head over to the $GOROOT src directory and then run all.bash, the installation script:</p>
+
+<pre><code>cd $GOROOT/src
+./all.bash
+</code></pre>
+
+<p>Once the installation is done, you should see the following output at the end:</p>
+
+<pre><code>--- cd ../test
+N known bugs; 0 unexpected bugs
+</code></pre>
+
+<p>This means you&#8217;re ready to start <a href="http://golang.org/doc/install.html#tmp_71">writing and compiling Go</a>. Congratulations!</p>
+
+<h2>Optional Step 4 - Quick compile and linking script</h2>
+
+<p>I created a very simple bash script called <code>go</code> that compiles and links the file in one step. You&#8217;re welcome to add this as an addition to your commands. Just run the following command to set it up:</p>
+
+<pre><code>cat &gt;&gt; $GOBIN/go &lt;&lt;EOF
+#! /bin/bash
+if [ ! \$1 ]; then
+  echo "Usage: go name_of_file (without the .go)"
+  exit
+fi
+6g \$1.go
+6l \$1.6
+EOF
+chmod +x $GOBIN/go
+</code></pre>
+
+<p>Now you can compile and link in one go ( *snicker* ). If your filename is <code>hello.go</code>, you can use it like this:</p>
+
+<pre><code>go hello
+</code></pre>
+
+<p>Nice &#8216;n easy. :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/03/05/merb-and-json/">Wrong Argument Type Hash (Expected Data) - Merb Json</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-05T00:00:00-08:00" pubdate data-updated="true">Mar 5<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was having a heck of a time with .to_json in Merb. Turns out, it was because Merb&#8217;s to_json implementation doesn&#8217;t work the same as ActiveRecords.</p>
+
+<p>In order to get it working, I had to disable the Merb one by placing the following code at the top of my init.rb file:</p>
+
+<p>Merb.disable :json</p>
+
+<p>Just thought I&#8217;d share. :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/01/24/setting-up-remote-git-server/">Setting Up a Remote Server to Access My Git Repository</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-24T00:00:00-08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I host all of my Git repositories on a box that has a different port than normal SSH connections use, which causes git checkouts to be a bit of a pain in the butt.</p>
+
+<p>So, in order to deal with this, any computer I plan on continually using for Git access, I add to the git user&#8217;s authorized_keys list. Here is the step by step I use to make it easy.</p>
+
+<p>All of these commands are performed on the computer I want to grant permission to.</p>
+
+<p>First, make sure I have a public ssh key.</p>
+
+<div>
+  <pre><code class='bash'>cat .ssh/id_rsa.pub</code></pre>
+</div>
+
+
+<p>Now, lets copy that public key to the Git server.</p>
+
+<div>
+  <pre><code class='bash'>scp -P 8888 .ssh/id_rsa.pub git@YOUR_SERVER_ADDRESS:~</code></pre>
+</div>
+
+
+<p>Using a remote SSH command, lets append our id_rsa.pub file to the authorized keys list, and then delete the file since we won&#8217;t be using it anymore.</p>
+
+<div>
+  <pre><code class='bash'>ssh -p 8888 git@YOUR_SERVER_ADDRESS &quot;cat id_rsa.pub &amp;gt;&amp;gt; .ssh/authorized_keys; rm id_rsa.pub&quot;</code></pre>
+</div>
+
+
+<p>Test the connection to make sure we can connect without a password. Just ssh and then exit immediately if it worked.</p>
+
+<div>
+  <pre><code class='bash'>ssh git@YOUR_SERVER_ADDRESS -p 8888</code></pre>
+</div>
+
+
+<p>Alright, so once that works, you have permission&#8230; but it still doesn&#8217;t deal with the port problem. To do that, we will create a .ssh host in the config file.</p>
+
+<div>
+  <pre><code class='bash'>vi .ssh/config</code></pre>
+</div>
+
+
+<p>You want to add something that looks like this:</p>
+
+<div>
+  <pre><code class='bash'>host myserver
+hostname YOUR_SERVER_ADDRESS
+user git
+port 8888</code></pre>
+</div>
+
+
+<p>Once you&#8217;ve done that, save the file and exit.</p>
+
+<p>Now, you should be able to clone your git repo without any problems. No more passwords, no more long git urls. Just beautiful simplicity.</p>
+
+<div>
+  <pre><code class='bash'>git clone myserver:commentize.git</code></pre>
+</div>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/01/24/modrails-donations/">How Much Has ModRails Made in Donations?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-01-24T00:00:00-08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So, after totally falling in love with ModRails (Phusion Passenger) a few months back, I was looking at their &#8220;Enterprise Edition&#8221; and began wondering how much they had made so far with their free software&#8230;</p>
+
+<p>Luckily, I had Ruby and Hpricot handy. I opened up IRB and ran the following code:</p>
+
+<p><code> require 'hpricot' <br/>require 'open-uri' <br/> doc = Hpricot(open('http://www.modrails.com/enterprise.html')) <br/>(doc/"tr/td").collect { |td| td.inner_html.scan('USD').empty? ? nil : td.inner_html.sub('USD ','').to_i }.compact.inject { |s,n| s + n } </code></p>
+
+<p>To date, they have made $20,700 in donations! Not bad for two guys and some &#8220;free&#8221; software.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/08/19/the-language-of-the-land/">Learning the Language of the Land</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-08-19T00:00:00-07:00" pubdate data-updated="true">Aug 19<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a href="http://xkcd.com/84/"><img src="/tumblr_files/xZVK1p2Hycu69g46c4tY4frw_500.jpg"/></a><br/><p><u><a href="http://xkcd.com/84/">T</a>he language of the land</u></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/05/20/just-hangin-around/">Hangin Around</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-05-20T00:00:00-07:00" pubdate data-updated="true">May 20<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><img src="/tumblr_files/xZVK1p2Hy98i6tfvOkIU3pg5_500.jpg"/><br/><p>Just hangin around</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/26/why-i-enjoy-cooking/">Why I Enjoy Cooking.</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-26T00:00:00-07:00" pubdate data-updated="true">Oct 26<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I made dinner for some of my friends in Mexico CIty last night and while I was plating everything one of them asked me why I started cooking. My standard response was that it&#8217;s a great way to get my head off of writing code and that it&#8217;s so much different than what I do every day.</p>
+
+<p>Later that night, while cleaning up, I thought about it some more and it really isn&#8217;t that much different. The thing that I think I like about it is that it&#8217;s a finished product every time. Other than that, it&#8217;s actually quite similar to what I do for work.</p>
+
+<p>1) Project Planning</p>
+
+<p>* What will I be cooking? (Overall Concept) <br/>
+
+* Who am I cooking for? (Intended audience) <br/>
+
+* Does anyone have allergies I should know of? (Accessibility concerns)<br/>
+
+* What time is everyone arriving? (Scheduling)<br/>
+
+* What if something doesn&#8217;t turn out right? (Contingencies)</p>
+
+<p>2) Actual Cooking</p>
+
+<p>When you&#8217;re actually cooking, you can find better ways to make something just like when you&#8217;re coding. You can re-use dishes and combine ingredients to make a custom result. You really have a lot of flexibility within a semi-constrained set of guidelines (flavor).</p>
+
+<p>On top of that, you have things to consider:</p>
+
+
+<p>* What order do things need to be cooked in? (Planning)<br/>
+
+* Do I have all the tools I need? (Resource Allocation)<br/>
+
+* Do I know how to cook everything? (Skills Requirements)</p>
+
+<p>3) Plating and Setup</p>
+
+<p>Inevitably, if you&#8217;re cooking a big meal, the kitchen is in a bit of chaos at this stage. Now comes the decoration. This is what your guests are actually going to see. You plan out your presentation, set the plates up and lay everything out so that it is well accepted by your guests.</p>
+
+<p>No matter how messy the process was, if the plating looks good and the food tastes great you&#8217;ve done well. Just like with any project though, you can have ugly presentation for great food or great presentation on crappy food. Finding the best of both worlds is tricky, but very rewarding.</p>
+
+<p>3) Cleanup</p>
+
+<p>This is where you take away all the mess caused by the cooking process. Get rid of the excess, wash the pots to give them a break and get them ready for the next time you need them, and get your working space back in order.</p>
+
+<p>The end result is that you have an entire project from concept to completion done in one day. I think that it&#8217;s important for people to feel a sense of accomplishment and completion. In my industry, projects range from a few week to a few months, and others seem like they never end. Cooking provides that feeling for me.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/20/a-well-designed-car/">A Well Designed Car</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-20T00:00:00-07:00" pubdate data-updated="true">Oct 20<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><img src="/tumblr_files/16410143_500.jpg"/><br/><p>Now that&#8217;s a well designed car </p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/10/17/restart-one-mongrel/">Restart Just One Mongrel Configuration</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-10-17T00:00:00-07:00" pubdate data-updated="true">Oct 17<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>sudo  mongrel_rails cluster::restart -C /etc/mongrel_cluster/file.conf</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/4/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/2/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/25/color-picking-in-osx-lion/">Color picking on OSX Lion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/26/jardin-du-luxembourg/">Sweet Memories of Paris</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/22/tips-around-vancouver/">Tips around Vancouver, Canada</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/">Delete all tasks in a Wunderlist</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/30/translating-html-in-a-chrome-extension/">Translating HTML in a Chrome Extension</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: quotes | My Octopress Blog]]></title>
+  <link href="http://jhubert.github.io/blog/categories/quotes/atom.xml" rel="self"/>
+  <link href="http://jhubert.github.io/"/>
+  <updated>2013-05-03T10:03:55-07:00</updated>
+  <id>http://jhubert.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Work Can Be Enjoyable]]></title>
+    <link href="http://jhubert.github.io/blog/2007/10/08/work-can-be-enjoyable/"/>
+    <updated>2007-10-08T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2007/10/08/work-can-be-enjoyable</id>
+    <content type="html"><![CDATA[<blockquote>It does not seem to be true that work necessarily needs to be unpleasant. It may always have to be hard, or at least harder than doing nothing at all. But there is ample evidence that work can be enjoyable, and that indeed, it is often the most enjoyable part of life.</blockquote>
+
+
+<p>&#8212;Mihaly Csikszentmihalyi, Flow: The Psychology of Optimal Experience, 1990</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Simplicity Is Effective]]></title>
+    <link href="http://jhubert.github.io/blog/2007/10/08/simplicity-is-effective/"/>
+    <updated>2007-10-08T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2007/10/08/simplicity-is-effective</id>
+    <content type="html"><![CDATA[<blockquote>It is simplicity that makes the uneducated more effective than the educated when addressing popular audiences</blockquote>
+
+
+<p>&#8212;Aristotle</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Important To Be Nice]]></title>
+    <link href="http://jhubert.github.io/blog/2007/10/08/important-to-be-nice/"/>
+    <updated>2007-10-08T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2007/10/08/important-to-be-nice</id>
+    <content type="html"><![CDATA[<blockquote>It&#8217;s nice to be important, but it&#8217;s more important to be nice.</blockquote>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Up and be doing, and doing to the purpose]]></title>
+    <link href="http://jhubert.github.io/blog/2007/08/05/poor-richard-up-and-doing/"/>
+    <updated>2007-08-05T00:00:00-07:00</updated>
+    <id>http://jhubert.github.io/blog/2007/08/05/poor-richard-up-and-doing</id>
+    <content type="html"><![CDATA[<blockquote>If time be of all things the most precious, wasting time must be the greatest prodigality, since lost time is never found again; and what we call time-enough, always proves little enough: Let us then up and be doing, and doing to the purpose;</blockquote>
+
+
+<p>&#8212;Poor Richard, 1758</p>
+]]></content>
+  </entry>
+  
+</feed>

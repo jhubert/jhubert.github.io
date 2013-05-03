@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="Lab with Leo Laporte Episode 72 http://video.google.com/videoplay?docid=-6734200025195606952">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jhubert.github.io/blog/page/6">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jhubert.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/05/lab-with-leo-interview/">Interviewed About Ruby on Rails on the Lab With Leo</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-05T00:00:00-07:00" pubdate data-updated="true">Sep 5<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">Lab with Leo Laporte Episode 72
+
+http://video.google.com/videoplay?docid=-6734200025195606952</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/05/10822072/">10822072</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-05T00:00:00-07:00" pubdate data-updated="true">Sep 5<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><img src="/tumblr_files/10822072_500.jpg"/><br/><p>hahahahahahahaha via <a href="http://www.jroller.com/obie/"><a href="http://www.jroller.com">www.jroller.com</a></a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/09/04/cleaning-up-with-ruby/">Using Ruby to Cleanup</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-09-04T00:00:00-07:00" pubdate data-updated="true">Sep 4<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I had a problem with editors on one of my sites not conforming to the standards for url path formatting (all lowercase alphanumeric, hyphen instead of spaces) so I added a little validation to the page model:</p>
+
+<div>
+  <pre><code class='ruby'>validates_format_of :slug,
+    :with =&gt; /\A[a-z0-9\-]+\Z/,
+    :message =&gt; 'can only contain lowercase letters, numbers and hyphens'</code></pre>
+</div>
+
+
+<p>Now, I had to update all of the pages that had been written to fit the new standard, but the real problem was updating inter-page links that had already been written. Luckily, script console came to the rescue:</p>
+
+<div>
+  <pre><code class='ruby'>Page.find(:all).each { |p|
+  p.update_attribute(:slug,p.slug.downcase.gsub('_','-'))
+};nil
+
+Page.find(:all).each do |p|
+  p.update_attribute(:body,
+    p.body.gsub(/\/c\/([a-z0-9\_\-]+)/i) { |m|
+      &quot;/c/#{m.downcase.gsub('_','-')}&quot;
+    }
+  )
+};nil</code></pre>
+</div>
+
+
+<p>I love Ruby. This would have been a pain in the ass in any other language.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/08/31/feeding-the-homeless/">Feeding the Homeless</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-08-31T00:00:00-07:00" pubdate data-updated="true">Aug 31<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><iframe width="400" height="300" src="http://www.youtube.com/embed/4X8BkuFQBOo?wmode=transparent&autohide=1&egm=0&hd=1&iv_load_policy=3&modestbranding=1&rel=0&showinfo=0&showsearch=0" frameborder="0" allowfullscreen></iframe><p>This guy pretends to be a cop and gets some shop to take food to a couple of homeless &#8220;undercover agents&#8221; (via <a href="http://youtube.com/user/himshims">himshims</a>)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/08/31/encoding-email-with-javascript/">Encoding Your E-mail Address With Ruby and Javascript</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-08-31T00:00:00-07:00" pubdate data-updated="true">Aug 31<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a href="http://pastie.caboo.se/92921">Encoding your e-mail address with ruby and javascript</a><br/><p>This is a little ruby function I wrote for creating static HTML javascript mailto links. You can use this to protect almost any html content that you don&#8217;t want spiders or people without javascript support to see.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/08/31/60-foot-slip-n-slide/">60 Foot Slip N Slide</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-08-31T00:00:00-07:00" pubdate data-updated="true">Aug 31<span>st</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><iframe width="400" height="299" src="http://www.youtube.com/embed/DPp2HlIMkmU?wmode=transparent&autohide=1&egm=0&hd=1&iv_load_policy=3&modestbranding=1&rel=0&showinfo=0&showsearch=0" frameborder="0" allowfullscreen></iframe><p>These guys built a slip and slide off of the roof of their house. This is awesome. (via <a href="http://youtube.com/user/Rondacon">Rondacon</a>)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/08/10/rails-meta-details/">Setting the Meta Details in Your Rails App</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-08-10T00:00:00-07:00" pubdate data-updated="true">Aug 10<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><a href="http://pastie.caboo.se/private/oiiko7s2hveqyhwwhd">Setting the Meta Details in your rails app</a><br/><p>A small snippet of RHTML that provides a simple way to set the meta details on a per page basis in your rails app</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/08/05/poor-richard-up-and-doing/">Up and Be Doing, and Doing to the Purpose</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-08-05T00:00:00-07:00" pubdate data-updated="true">Aug 5<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><blockquote>If time be of all things the most precious, wasting time must be the greatest prodigality, since lost time is never found again; and what we call time-enough, always proves little enough: Let us then up and be doing, and doing to the purpose;</blockquote>&#8212;Poor Richard, 1758
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/08/05/26-years-old/">26 Years Old</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-08-05T00:00:00-07:00" pubdate data-updated="true">Aug 5<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><img src="/tumblr_files/7788085_500.jpg"/><br/><p>26 years old. Oh my.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2007/07/05/serializing-multi-select-in-rails/">Serialized Multiple Select in Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2007-07-05T00:00:00-07:00" pubdate data-updated="true">Jul 5<span>th</span>, 2007</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the current app i’m working on, I wanted to store multiple values in a single column.  I know, violation of the first normal form.. blah blah blah.  Save it.</p>
+
+<p>Anyway, I wanted to have a multiple select box that would easily allow me to Manage and update the attributes of the model. Here is my solution.</p>
+
+<h3>Create the database table</h3>
+
+<div>
+  <pre><code class='ruby'>create_table :tshirt, :force =&gt; true do |t|
+  t.column :available_colors, :string
+  t.column :available_sizes, :string
+end</code></pre>
+</div>
+
+
+<h3>Create the Model</h3>
+
+<div>
+  <pre><code class='ruby'>class Tshirt &lt; ActiveRecord::Base
+  serialize :available_colors, Array
+  serialize :available_sizes, Array
+end</code></pre>
+</div>
+
+
+<h3>Create the <span class="caps">YAML</span> Options Hash</h3>
+
+<p>I use an options.yml file in the config directory to setup the options for the object. A containing hash is created using the name of the object, and then the sub-hashes match the name of the column.</p>
+
+<p>./config/options.yml</p>
+
+<div>
+  <pre><code class='ruby'>tshirt:
+  available_colors:
+    1: Red
+    2: Blue
+    3: Green
+  available_sizes:
+    1: Small
+    2: Medium
+    3: Large</code></pre>
+</div>
+
+
+<h3>Load the Options File into the App</h3>
+
+<p>In your environment.rb file you have to load the <span class="caps">YAML</span> parser and then parse the options.yml file:</p>
+
+<div>
+  <pre><code class='ruby'>require 'yaml'
+OPTIONS = YAML::load(File.open(&quot;#{RAILS_ROOT}/config/options.yml&quot;))</code></pre>
+</div>
+
+
+<h3>The Select Box</h3>
+
+<p>This is the hard part.</p>
+
+<div>
+  <pre><code class='ruby'>module ActionView
+  module Helpers
+    module FormOptionsHelper
+      include ERB::Util
+
+      def serialized_multiple_select(object, method, choices = {}, options = {}, html_options = {})
+        html = []
+        html &lt;&lt; &quot;&lt;select id=\&quot;#{object}_#{method}\&quot; name=\&quot;#{object}[#{method}]\&quot; multiple=\&quot;multiple\&quot; size=\&quot;5\&quot;&gt;&quot;
+        html &lt;&lt; options_for_select(OPTIONS[object].invert,self.instance_variable_get('@'+object).send(method).collect{|x| x.to_i })
+        html &lt;&lt; &quot;&lt;/select&gt;&quot;
+        return html
+      end
+    end
+  end
+end</code></pre>
+</div>
+
+
+<h3>Add the select box to your form</h3>
+
+<p>And this is the easy part:</p>
+
+<div>
+  <pre><code class='erb'>&lt;p&gt;Colors: &lt;%= serialized_multiple_select 'tshirt', 'available_colors' %&gt;&lt;/p&gt;
+&lt;p&gt;Sizes: &lt;%= serialized_multiple_select 'tshirt', 'available_sizes' %&gt;&lt;/p&gt;</code></pre>
+</div>
+
+
+<p>I am pretty sure there are better way to do this, but this one worked for me.</p>
+
+<p>Also, my serialized_multiple_select has options that it doesn’t even use.  I should really use them.  Please offer feedback if you have any. :)</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/7/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/5/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/01/25/color-picking-in-osx-lion/">Color picking on OSX Lion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/12/26/jardin-du-luxembourg/">Sweet Memories of Paris</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/22/tips-around-vancouver/">Tips around Vancouver, Canada</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/02/delete-all-tasks-in-a-wunderlist/">Delete all tasks in a Wunderlist</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/06/30/translating-html-in-a-chrome-extension/">Translating HTML in a Chrome Extension</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
